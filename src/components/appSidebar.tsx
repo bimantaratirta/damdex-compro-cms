@@ -9,7 +9,7 @@ const menuItems = [
   {
     name: "Home Page",
     icon: Home,
-    url: "/dashboard",
+    url: "/dashboard/homepage",
   },
   {
     name: "Event Gallery",
