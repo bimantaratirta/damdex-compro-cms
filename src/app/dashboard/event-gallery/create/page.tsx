@@ -9,6 +9,10 @@ import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { Datepicker } from "@/components/datePicker";
+import { toast } from "sonner";
+import { postEventGallery } from "@/repositories/eventGallery";
+import { errorHandling } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Bahasa Indonesia harus diisi" }),
@@ -24,6 +28,7 @@ const formSchema = z.object({
 });
 
 const Page = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +46,27 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (values.heroImage.name === "") toast.error("Gambar event belum ada.");
+    const formdata = new FormData();
+    formdata.append("eventDate", values.eventDate.toISOString());
+    formdata.append("titleIDN", values.titleIDN);
+    formdata.append("eventDescriptionIDN", values.eventDescriptionIDN);
+    formdata.append("eventVenueIDN", values.eventVenueIDN);
+    formdata.append("eventThemeIDN", values.eventThemeIDN);
+    formdata.append("titleENG", values.titleENG);
+    formdata.append("eventDescriptionENG", values.eventDescriptionENG);
+    formdata.append("eventVenueENG", values.eventVenueENG);
+    formdata.append("eventThemeENG", values.eventThemeENG);
+    if (values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
+    try {
+      await postEventGallery(formdata);
+      toast.success("Event berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      setInterval(() => router.push("/event-gallery"), 3000);
+    } catch (error) {
+      errorHandling(error, "Event gagal dibuat");
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -34,6 +34,7 @@ const formSchema = z.object({
 
 export const Section2 = () => {
   //   const router = useRouter();
+  //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

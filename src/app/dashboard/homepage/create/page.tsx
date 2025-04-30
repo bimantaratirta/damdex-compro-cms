@@ -9,7 +9,10 @@ import { InputFile } from "@/components/inputFile";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
-// import { useRouter } from "next/navigation";
+import { errorHandling } from "@/lib/utils";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { postHome } from "@/repositories/home";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -42,7 +45,7 @@ const formSchema = z.object({
 });
 
 const Page = () => {
-  //   const router = useRouter();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,7 +75,56 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (
+      values.section1Background.name === "" ||
+      values.section1GifImage.name === "" ||
+      values.section2TopLeftImage.name === "" ||
+      values.section2TopRightImage.name === "" ||
+      values.section2BottomLeftImage.name === "" ||
+      values.section2BottomRightImage.name === "" ||
+      values.section3TopLeftImage.name === "" ||
+      values.section3BottomRightImage.name === ""
+    )
+      toast.error("Semua file gambar harus diupload.");
+    const section1 = new FormData();
+    section1.append("section1Background", values.section1Background);
+    section1.append("section1GifImage", values.section1GifImage);
+    section1.append("section1Description", values.section1Description);
+    section1.append("sectionNumber", "1");
+
+    const section2 = new FormData();
+    section2.append("section2TopLeftImage", values.section2TopLeftImage);
+    section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
+    section2.append("section2TopLeftDescription", values.section2TopLeftDescription);
+    section2.append("section2TopRightImage", values.section2TopRightImage);
+    section2.append("section2TopRightTitle", values.section2TopRightTitle);
+    section2.append("section2TopRightDescription", values.section2TopRightDescription);
+    section2.append("section2BottomLeftImage", values.section2BottomLeftImage);
+    section2.append("section2BottomLeftTitle", values.section2BottomLeftTitle);
+    section2.append("section2BottomLeftDescription", values.section2BottomLeftDescription);
+    section2.append("section2BottomRightImage", values.section2BottomRightImage);
+    section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
+    section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
+    section1.append("sectionNumber", "2");
+
+    const section3 = new FormData();
+    section3.append("section3TopLeftImage", values.section3TopLeftImage);
+    section3.append("section3TopLeftTitle", values.section3TopLeftTitle);
+    section3.append("section3TopLeftDescription", values.section3TopLeftDescription);
+    section3.append("section3BottomRightImage", values.section3BottomRightImage);
+    section3.append("section3BottomRightTitle", values.section3BottomRightTitle);
+    section3.append("section3BottomRightDescription", values.section3BottomRightDescription);
+    section1.append("sectionNumber", "3");
+
+    try {
+      await Promise.all([postHome(section1), postHome(section2), postHome(section3)]);
+      toast.success("Data homepage berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      setInterval(() => router.push("/dashboard"), 3000);
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
   };
 
   return (

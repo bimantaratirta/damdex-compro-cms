@@ -9,6 +9,10 @@ import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { Datepicker } from "@/components/datePicker";
+import { patchEventGallery } from "@/repositories/eventGallery";
+import { toast } from "sonner";
+import { errorHandling } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Bahasa Indonesia harus diisi" }),
@@ -24,7 +28,9 @@ const formSchema = z.object({
 });
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
+  const router = useRouter();
   const { id } = React.use(params);
+  //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,8 +48,27 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    if (values.heroImage.name === "") toast.error("Gambar event belum ada.");
+    const formdata = new FormData();
+    formdata.append("eventDate", values.eventDate.toISOString());
+    formdata.append("titleIDN", values.titleIDN);
+    formdata.append("eventDescriptionIDN", values.eventDescriptionIDN);
+    formdata.append("eventVenueIDN", values.eventVenueIDN);
+    formdata.append("eventThemeIDN", values.eventThemeIDN);
+    formdata.append("titleENG", values.titleENG);
+    formdata.append("eventDescriptionENG", values.eventDescriptionENG);
+    formdata.append("eventVenueENG", values.eventVenueENG);
+    formdata.append("eventThemeENG", values.eventThemeENG);
+    if (values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
+    try {
+      await patchEventGallery(id, formdata);
+      toast.success("Event berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      setInterval(() => router.push("/event-gallery"), 3000);
+    } catch (error) {
+      errorHandling(error, "Event gagal diubah");
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

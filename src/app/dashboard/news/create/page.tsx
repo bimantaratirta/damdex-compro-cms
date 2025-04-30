@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
+import { postNews } from "@/repositories/news";
+import { errorHandling } from "@/lib/utils";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "judul Berita Bahasa Indonesia harus diisi" }),
@@ -18,6 +22,7 @@ const formSchema = z.object({
 });
 
 const Page = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,8 +35,26 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const formdata = new FormData();
+    if (values.titleImage.name === "") {
+      toast.error("Gambar berita belum ada.");
+      return;
+    }
+    formdata.append("titleIDN", values.titleIDN);
+    formdata.append("contentIDN", values.contentIDN);
+    formdata.append("titleENG", values.titleENG);
+    formdata.append("contentENG", values.contentENG);
+    if (values.titleImage !== undefined && values.titleImage.name !== "")
+      formdata.append("titleImage", values.titleImage);
+    try {
+      await postNews(formdata);
+      toast.success("Berita berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      setInterval(() => router.push("/news"), 3000);
+    } catch (error) {
+      errorHandling(error, "Berita Gagal Dibuat");
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
