@@ -1,6 +1,15 @@
 "use client";
 import React from "react";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { Home, GalleryThumbnails, Newspaper, Folder } from "lucide-react";
 import Image from "next/image";
 import logo from "@/../public/damdexlogo.png";
@@ -19,17 +28,22 @@ const menuItems = [
   {
     name: "News",
     icon: Newspaper,
-    url: "/dashboard",
+    url: "/dashboard/news",
   },
   {
     name: "Product",
     icon: Folder,
-    url: "/dashboard",
+    url: "/dashboard/product",
   },
   {
     name: "Project",
     icon: Folder,
-    url: "/dashboard",
+    url: "/dashboard/project",
+  },
+  {
+    name: "Use",
+    icon: Folder,
+    url: "/dashboard/use",
   },
 ];
 
@@ -37,7 +51,13 @@ export const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <Image alt="logo my istiqlal" src={logo} style={{ margin: "0 auto 0 auto" }} width={100} height={80} />
+        <Image
+          alt="logo my istiqlal"
+          src={logo}
+          style={{ margin: "0 auto 0 auto" }}
+          width={100}
+          height={80}
+        />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
