@@ -23,7 +23,7 @@ const menuItems = [
   {
     name: "Event Gallery",
     icon: GalleryThumbnails,
-    url: "/dashboard",
+    url: "/dashboard/event-gallery",
   },
   {
     name: "News",

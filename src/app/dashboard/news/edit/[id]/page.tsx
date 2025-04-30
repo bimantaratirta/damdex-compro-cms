@@ -10,11 +10,11 @@ import { Form } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 
 const formSchema = z.object({
-  titleIDN: z.string().min(1, { message: "Judul Bahasa Indonesia harus diisi" }),
-  contentIDN: z.string().min(1, { message: "Deskripsi Bahasa Indonesia harus diisi" }),
-  titleENG: z.string().min(1, { message: "Judul Bahasa Inggris harus diisi" }),
-  contentENG: z.string().min(1, { message: "Deskripsi Bahasa Inggris harus diisi" }),
-  titleImage: z.instanceof(File),
+  titleIDN: z.string().min(1, { message: "Judul Berita Bahasa Indonesia harus diisi" }),
+  contentIDN: z.string().min(1, { message: "Konten Berita Bahasa Indonesia harus diisi" }),
+  titleENG: z.string().min(1, { message: "Judul Berita Bahasa Inggris harus diisi" }),
+  contentENG: z.string().min(1, { message: "Konten Berita Bahasa Inggris harus diisi" }),
+  titleImage: z.instanceof(File).optional(),
 });
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
