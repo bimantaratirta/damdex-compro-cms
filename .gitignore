@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playground
+src/app/dashboard/playground*
+src/app/editor-00*
