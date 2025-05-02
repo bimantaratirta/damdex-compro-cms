@@ -89,7 +89,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <div className="w-full overflow-hidden rounded-lg border bg-background shadow">
+            <div className="w-full overflow-hidden rounded-lg border bg-background shadow z-[1]">
               <LexicalComposer
                 initialConfig={{
                   ...editorConfig,
@@ -131,7 +131,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                           <div>
                             <div ref={onRef}>
                               <ContentEditable
-                                placeholder={"Isi Konten disini..."}
+                                placeholder={placeholder}
                                 className="ContentEditable__root relative block min-h-72 overflow-auto min-h-full px-8 py-4 focus:outline-none h-72"
                               />
                             </div>
