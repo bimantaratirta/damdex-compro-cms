@@ -3,7 +3,7 @@ import { Home } from "@/lib/types/home";
 import { DataResponse } from "@/lib/types/response";
 import axios from "axios";
 
-export const fetchHome = async (params: { language: "id" | "eng"; section: number }): Promise<DataResponse<Home[]>> => {
+export const fetchHome = async (params: { lang: string; section: number }): Promise<DataResponse<Home[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<Home[]>>(`/homepage`, { params });
     return res.data;
