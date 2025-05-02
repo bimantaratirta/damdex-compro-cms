@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import { HomeQuery, PaginationQuery } from "./query";
 import { HomeParams, PaginationParams } from "./params";
+import { createHash } from "crypto";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -69,4 +70,9 @@ export const homeQuerytoParams = (query: HomeQuery): HomeParams => {
     lang: query.lang ?? undefined,
     section: query.section ?? undefined,
   };
+};
+
+export const hasher = (data: string) => {
+  const hashed = createHash("sha256").update(data).digest("hex");
+  return hashed;
 };

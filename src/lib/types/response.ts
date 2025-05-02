@@ -28,3 +28,15 @@ export type Base = {
   updatedAt: Date;
   deletedAt: Date;
 };
+
+export interface User extends Base {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+}
+
+export type UserData = {
+  user: User;
+  token: string;
+};

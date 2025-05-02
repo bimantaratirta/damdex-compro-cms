@@ -1,6 +1,5 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/appSidebar";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -18,7 +17,6 @@ export default function RootLayout({
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0 mt-15">{children}</div>
-        <Toaster richColors />
       </SidebarInset>
     </SidebarProvider>
   );

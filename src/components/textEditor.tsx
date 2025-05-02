@@ -65,7 +65,6 @@ type TextEditorProps = {
 
 export function TextEditor({ formControl, name, label, placeholder = "Isi konten disini..." }: TextEditorProps) {
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
-  const [tag, setTag] = useState<string>("");
   const editorConfig: InitialConfigType = {
     namespace: "Editor",
     theme: editorTheme,
