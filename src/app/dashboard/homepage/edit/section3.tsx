@@ -43,7 +43,14 @@ export const Section3 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const section3 = new FormData();
+    section3.append("section3TopLeftImage", values.section3TopLeftImage);
+    section3.append("section3TopLeftTitle", values.section3TopLeftTitle);
+    section3.append("section3TopLeftDescription", values.section3TopLeftDescription);
+    section3.append("section3BottomRightImage", values.section3BottomRightImage);
+    section3.append("section3BottomRightTitle", values.section3BottomRightTitle);
+    section3.append("section3BottomRightDescription", values.section3BottomRightDescription);
+    section3.append("sectionNumber", "3");
   };
 
   return (

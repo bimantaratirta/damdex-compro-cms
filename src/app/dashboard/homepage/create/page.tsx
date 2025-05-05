@@ -105,7 +105,7 @@ const Page = () => {
     section2.append("section2BottomRightImage", values.section2BottomRightImage);
     section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
     section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
-    section1.append("sectionNumber", "2");
+    section2.append("sectionNumber", "2");
 
     const section3 = new FormData();
     section3.append("section3TopLeftImage", values.section3TopLeftImage);
@@ -114,7 +114,7 @@ const Page = () => {
     section3.append("section3BottomRightImage", values.section3BottomRightImage);
     section3.append("section3BottomRightTitle", values.section3BottomRightTitle);
     section3.append("section3BottomRightDescription", values.section3BottomRightDescription);
-    section1.append("sectionNumber", "3");
+    section3.append("sectionNumber", "3");
 
     try {
       await Promise.all([postHome(section1), postHome(section2), postHome(section3)]);

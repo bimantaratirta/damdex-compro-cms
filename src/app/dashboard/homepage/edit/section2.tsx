@@ -55,7 +55,20 @@ export const Section2 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const section2 = new FormData();
+    section2.append("section2TopLeftImage", values.section2TopLeftImage);
+    section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
+    section2.append("section2TopLeftDescription", values.section2TopLeftDescription);
+    section2.append("section2TopRightImage", values.section2TopRightImage);
+    section2.append("section2TopRightTitle", values.section2TopRightTitle);
+    section2.append("section2TopRightDescription", values.section2TopRightDescription);
+    section2.append("section2BottomLeftImage", values.section2BottomLeftImage);
+    section2.append("section2BottomLeftTitle", values.section2BottomLeftTitle);
+    section2.append("section2BottomLeftDescription", values.section2BottomLeftDescription);
+    section2.append("section2BottomRightImage", values.section2BottomRightImage);
+    section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
+    section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
+    section2.append("sectionNumber", "2");
   };
 
   return (

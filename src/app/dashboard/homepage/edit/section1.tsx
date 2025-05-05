@@ -8,7 +8,10 @@ import { InputFile } from "@/components/inputFile";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
+// import { patchHome } from "@/repositories/home";
+// import { toast } from "sonner";
 // import { useRouter } from "next/navigation";
+// import { errorHandling } from "@/lib/utils";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -23,7 +26,7 @@ const formSchema = z.object({
 });
 
 export const Section1 = () => {
-  //   const router = useRouter();
+  // const router = useRouter();
   //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,7 +39,11 @@ export const Section1 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    const section1 = new FormData();
+    section1.append("section1Background", values.section1Background);
+    section1.append("section1GifImage", values.section1GifImage);
+    section1.append("section1Description", values.section1Description);
+    section1.append("sectionNumber", "1");
   };
 
   return (
