@@ -46,7 +46,6 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
       formdata.append("titleImage", values.titleImage);
     try {
       await patchNews(id, formdata);
-      console.log(values);
       toast.success("Berita berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       setInterval(() => router.push("/news"), 3000);
     } catch (error) {

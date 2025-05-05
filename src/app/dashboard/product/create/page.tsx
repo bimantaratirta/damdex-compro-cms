@@ -47,7 +47,6 @@ const Page = () => {
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await postProduct(formdata);
-      console.log(values);
       toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       setInterval(() => router.push("/news"), 3000);
     } catch (error) {

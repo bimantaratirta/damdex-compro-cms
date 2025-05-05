@@ -10,7 +10,6 @@ export function middleware(request: NextRequest) {
   }
 
   if (pathname === "/" && status?.value === "active") {
-    console.log(status);
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 

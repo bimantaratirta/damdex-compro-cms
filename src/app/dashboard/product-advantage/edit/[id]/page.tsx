@@ -54,7 +54,6 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await patchProductAdvantage(id, formdata);
-      console.log(values);
       toast.success("Kelebihan Produk berhasil diubah", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
