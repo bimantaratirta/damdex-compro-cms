@@ -7,11 +7,11 @@ import { InputField } from "@/components/inputField";
 import { Button } from "@/components/ui/button";
 import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
-import { InputArea } from "@/components/inputArea";
 import { patchNews } from "@/repositories/news";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
+import { TextEditor } from "@/components/textEditor";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Berita Bahasa Indonesia harus diisi" }),
@@ -66,11 +66,10 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             className="w-full"
             label="Judul Berita Bahasa Indonesia"
           />
-          <InputArea
+          <TextEditor
             formControl={form.control}
             name="contentIDN"
             placeholder="Konten Berita Bahasa Indonesia"
-            className="w-full"
             label="Konten Berita Bahasa Indonesia"
           />
           <InputField
@@ -80,11 +79,10 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             className="w-full"
             label="Judul Berita Bahasa Inggris"
           />
-          <InputArea
+          <TextEditor
             formControl={form.control}
             name="contentENG"
             placeholder="Konten Berita Bahasa Inggris"
-            className="w-full"
             label="Konten Berita Bahasa Inggris"
           />
           <InputFile

@@ -7,12 +7,12 @@ import { InputField } from "@/components/inputField";
 import { Button } from "@/components/ui/button";
 import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
-import { InputArea } from "@/components/inputArea";
 import { Datepicker } from "@/components/datePicker";
 import { patchEventGallery } from "@/repositories/eventGallery";
 import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { TextEditor } from "@/components/textEditor";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Bahasa Indonesia harus diisi" }),
@@ -95,11 +95,10 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             className="w-full"
             label="Tema Event Bahasa Indonesia"
           />
-          <InputArea
+          <TextEditor
             formControl={form.control}
             name="eventDescriptionIDN"
             placeholder="Deskripsi Event Bahasa Indonesia"
-            className="w-full"
             label="Deskripsi Event Bahasa Indonesia"
           />
           <InputField
@@ -123,11 +122,10 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             className="w-full"
             label="Tema Event Bahasa Inggris"
           />
-          <InputArea
+          <TextEditor
             formControl={form.control}
             name="eventDescriptionENG"
             placeholder="Deskripsi Event Bahasa Inggris"
-            className="w-full"
             label="Deskripsi Event Bahasa Inggris"
           />
           <Datepicker

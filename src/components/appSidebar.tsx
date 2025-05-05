@@ -31,11 +31,6 @@ const menuItems = [
     url: "/dashboard/news",
   },
   {
-    name: "Product",
-    icon: Folder,
-    url: "/dashboard/product",
-  },
-  {
     name: "Project",
     icon: Folder,
     url: "/dashboard/project",
@@ -44,6 +39,16 @@ const menuItems = [
     name: "Use",
     icon: Folder,
     url: "/dashboard/use",
+  },
+  {
+    name: "Product",
+    icon: Folder,
+    url: "/dashboard/product",
+  },
+  {
+    name: "Product Advantage",
+    icon: Folder,
+    url: "/dashboard/product-advantage",
   },
 ];
 

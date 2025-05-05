@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ListNode, ListItemNode } from "@lexical/list";
-import { ParagraphNode, TextNode } from "lexical";
+import { ParagraphNode, TextNode, $getRoot, LexicalEditor } from "lexical";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { InitialConfigType, LexicalComposer } from "@lexical/react/LexicalComposer";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
@@ -13,7 +13,7 @@ import { editorTheme } from "@/components/editor/themes/editor-theme";
 import { ContentEditable } from "@/components/editor/editor-ui/content-editable";
 import { ToolbarPlugin } from "@/components/editor/plugins/toolbar/toolbar-plugin";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { $generateHtmlFromNodes } from "@lexical/html";
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
 import { HistoryToolbarPlugin } from "@/components/editor/plugins/toolbar/history-toolbar-plugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -55,15 +55,41 @@ export const HtmlPlugin = ({ onHtmlChanged }: { onHtmlChanged: (html: string) =>
   );
 };
 
+export default function LexicalDefaultValuePlugin({ value = "" }: { value?: string | null }) {
+  const [editor] = useLexicalComposerContext();
+
+  const updateHTML = (editor: LexicalEditor, value: string, clear: boolean) => {
+    const root = $getRoot();
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(value, "text/html");
+    const nodes = $generateNodesFromDOM(editor, dom);
+    if (clear) {
+      root.clear();
+    }
+    root.append(...nodes);
+  };
+
+  useEffect(() => {
+    if (editor && value) {
+      editor.update(() => {
+        updateHTML(editor, value, true);
+      });
+    }
+  }, [value]);
+
+  return null;
+}
+
 type TextEditorProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formControl?: Control<any>;
   name: string;
   label?: string;
   placeholder?: string;
+  value?: string | null;
 };
 
-export function TextEditor({ formControl, name, label, placeholder = "Isi konten disini..." }: TextEditorProps) {
+export function TextEditor({ formControl, name, label, placeholder = "Isi konten disini...", value }: TextEditorProps) {
   const [floatingAnchorElem, setFloatingAnchorElem] = useState<HTMLDivElement | null>(null);
   const editorConfig: InitialConfigType = {
     namespace: "Editor",
@@ -144,6 +170,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                       <TabIndentationPlugin />
                       <ImagesPlugin />
                       <InlineImagePlugin />
+                      <LexicalDefaultValuePlugin value={value} />
                       <HtmlPlugin onHtmlChanged={(html) => field.onChange(html)} />
                       {/* rest of the plugins */}
                     </div>

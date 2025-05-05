@@ -7,22 +7,24 @@ import { InputField } from "@/components/inputField";
 import { Button } from "@/components/ui/button";
 import { InputFile } from "@/components/inputFile";
 import { Form } from "@/components/ui/form";
-import { postNews } from "@/repositories/news";
-import { errorHandling } from "@/lib/utils";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { errorHandling } from "@/lib/utils";
 import { TextEditor } from "@/components/textEditor";
+import { patchProduct } from "@/repositories/product";
 
 const formSchema = z.object({
-  titleIDN: z.string().min(1, { message: "judul Berita Bahasa Indonesia harus diisi" }),
-  contentIDN: z.string().min(1, { message: "Konten Berita Bahasa Indonesia harus diisi" }),
-  titleENG: z.string().min(1, { message: "judul Berita Bahasa Inggris harus diisi" }),
-  contentENG: z.string().min(1, { message: "Konten Berita Bahasa Inggris harus diisi" }),
-  titleImage: z.instanceof(File),
+  titleIDN: z.string().min(1, { message: "Nama Produk Bahasa Indonesia harus diisi" }),
+  contentIDN: z.string().min(1, { message: "Konten Produk Bahasa Indonesia harus diisi" }),
+  titleENG: z.string().min(1, { message: "Nama Produk Bahasa Inggris harus diisi" }),
+  contentENG: z.string().min(1, { message: "Konten Produk Bahasa Inggris harus diisi" }),
+  heroImage: z.instanceof(File).optional(),
 });
 
-const Page = () => {
+const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
+  const { id } = React.use(params);
+  //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,28 +32,24 @@ const Page = () => {
       contentIDN: "",
       titleENG: "",
       contentENG: "",
-      titleImage: new File([], ""),
+      heroImage: new File([], ""),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formdata = new FormData();
-    if (values.titleImage.name === "") {
-      toast.error("Gambar berita belum ada.");
-      return;
-    }
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("contentIDN", values.contentIDN);
     formdata.append("titleENG", values.titleENG);
     formdata.append("contentENG", values.contentENG);
-    if (values.titleImage !== undefined && values.titleImage.name !== "")
-      formdata.append("titleImage", values.titleImage);
+    if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
-      await postNews(formdata);
-      toast.success("Berita berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await patchProduct(id, formdata);
+      console.log(values);
+      toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       setInterval(() => router.push("/news"), 3000);
     } catch (error) {
-      errorHandling(error, "Berita Gagal Dibuat");
+      errorHandling(error, "Produk Gagal diubah");
     }
   };
 
@@ -59,42 +57,42 @@ const Page = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Buat Berita Baru</p>
+          <p>Edit Produk {id}</p>
           <InputField
             formControl={form.control}
             name="titleIDN"
-            placeholder="Judul Berita Bahasa Indonesia"
+            placeholder="Nama Produk Bahasa Indonesia"
             className="w-full"
-            label="Judul Berita Bahasa Indonesia"
+            label="Nama Produk Bahasa Indonesia"
           />
           <TextEditor
             formControl={form.control}
             name="contentIDN"
-            placeholder="Konten Berita Bahasa Indonesia"
-            label="Konten Berita Bahasa Indonesia"
+            placeholder="Konten Produk Bahasa Indonesia"
+            label="Konten Produk Bahasa Indonesia"
           />
           <InputField
             formControl={form.control}
             name="titleENG"
-            placeholder="Judul Berita Bahasa Inggris"
+            placeholder="Nama Produk Bahasa Inggris"
             className="w-full"
-            label="Judul Berita Bahasa Inggris"
+            label="Nama Produk Bahasa Inggris"
           />
           <TextEditor
             formControl={form.control}
             name="contentENG"
-            placeholder="Konten Berita Bahasa Inggris"
-            label="Konten Berita Bahasa Inggris"
+            placeholder="Konten Produk Bahasa Inggris"
+            label="Konten Produk Bahasa Inggris"
           />
           <InputFile
-            name="titleImage"
+            name="heroImage"
             formControl={form.control}
-            label="Gambar Berita"
+            label="Gambar Produk"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
           />
         </div>
-        <Button className="mt-10">Buat Berita</Button>
+        <Button className="mt-10">Edit Produk</Button>
       </form>
     </Form>
   );
