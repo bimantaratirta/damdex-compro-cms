@@ -143,7 +143,17 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
           />
         </div>
-        <Button className="mt-10">Buat Event</Button>
+        <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
+          <Button>Ubah Event</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/dashboard/event-gallery");
+            }}
+          >
+            Kembali
+          </Button>
+        </div>
       </form>
     </Form>
   );

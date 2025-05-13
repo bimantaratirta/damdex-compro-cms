@@ -111,7 +111,17 @@ const Page = () => {
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
           />
         </div>
-        <Button className="mt-10">Buat Projek</Button>
+        <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
+          <Button>Buat Projek</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/dashboard/project");
+            }}
+          >
+            Kembali
+          </Button>
+        </div>
       </form>
     </Form>
   );

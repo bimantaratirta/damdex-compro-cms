@@ -9,7 +9,7 @@ import { InputFile } from "@/components/inputFile";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -27,7 +27,7 @@ const formSchema = z.object({
 });
 
 export const Section3 = () => {
-  //   const router = useRouter();
+  const router = useRouter();
   //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -137,7 +137,17 @@ export const Section3 = () => {
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
           />
         </div>
-        <Button className="mt-10">Edit Section 3</Button>
+        <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
+          <Button>Edit Section 3</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/dashboard/homepage");
+            }}
+          >
+            Kembali
+          </Button>
+        </div>
       </form>
     </Form>
   );

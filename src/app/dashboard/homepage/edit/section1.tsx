@@ -8,9 +8,9 @@ import { InputFile } from "@/components/inputFile";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
+import { useRouter } from "next/navigation";
 // import { patchHome } from "@/repositories/home";
 // import { toast } from "sonner";
-// import { useRouter } from "next/navigation";
 // import { errorHandling } from "@/lib/utils";
 
 const dataBahasa = [
@@ -26,7 +26,7 @@ const formSchema = z.object({
 });
 
 export const Section1 = () => {
-  // const router = useRouter();
+  const router = useRouter();
   //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,7 +110,17 @@ export const Section1 = () => {
             className="w-full"
           />
         </div>
-        <Button className="mt-10">Edit Section 1</Button>
+        <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
+          <Button>Edit Section 1</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/dashboard/homepage");
+            }}
+          >
+            Kembali
+          </Button>
+        </div>
       </form>
     </Form>
   );
