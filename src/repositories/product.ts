@@ -16,6 +16,18 @@ export const fetchProduct = async (params: PaginationParams): Promise<PaginatedD
   }
 };
 
+export const fetchProductNoPagination = async (): Promise<DataResponse<Product[]>> => {
+  try {
+    const res = await damdexPublicAPI.get<DataResponse<Product[]>>(`/product/get-product-options`);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response;
+    }
+    throw error;
+  }
+};
+
 export const fetchProductbyId = async (id: string): Promise<DataResponse<Product[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<Product[]>>(`/product/${id}`);
