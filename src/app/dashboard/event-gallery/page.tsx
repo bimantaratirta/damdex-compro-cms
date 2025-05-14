@@ -61,7 +61,7 @@ const Page = () => {
     limit: pagination.pageSize,
   });
   const defaultData = React.useMemo(() => data?.data.payload ?? [], [data]);
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     try {
       await deleteEventGallery(id);
       toast.success("Event berhasil dihapus");
@@ -89,7 +89,7 @@ const Page = () => {
       />
       <ConfirmDialog
         title={`Apakah anda yakin ingin menghapus "${openDelete?.titleIDN ?? "data"}"?`}
-        onConfirmClick={() => handleDelete(openDelete?.id ?? "")}
+        onConfirmClick={() => handleDelete(openDelete?.id ?? 0)}
         cancelLabel="Batal"
         confirmLabel="Hapus"
         open={Boolean(openDelete)}

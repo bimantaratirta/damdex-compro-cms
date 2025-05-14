@@ -23,7 +23,7 @@ export type PaginatedDataResponse<T> = {
 };
 
 export type Base = {
-  id: string;
+  id: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

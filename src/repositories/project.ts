@@ -16,7 +16,7 @@ export const fetchProject = async (params: PaginationParams): Promise<PaginatedD
   }
 };
 
-export const fetchProjectbyId = async (id: string): Promise<DataResponse<Project[]>> => {
+export const fetchProjectbyId = async (id: number): Promise<DataResponse<Project[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<Project[]>>(`/project/${id}`);
     return res.data;
@@ -38,7 +38,7 @@ export const postProject = async (body: FormData) => {
   }
 };
 
-export const patchProject = async (id: string, body: FormData) => {
+export const patchProject = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<Project>(`/project/${id}`, body);
     return res.data;
@@ -48,7 +48,7 @@ export const patchProject = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteProject = async (id: string) => {
+export const deleteProject = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<Project>>(`/project/${id}`);
     return res.data;

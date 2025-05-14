@@ -48,7 +48,7 @@ const Page = () => {
     try {
       await postProduct(formdata);
       toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/news"), 3000);
+      setInterval(() => router.push("/dashboard/product"), 3000);
     } catch (error) {
       errorHandling(error, "Produk Gagal diubah");
     }

@@ -28,7 +28,7 @@ export const fetchUseNoPagination = async (): Promise<DataResponse<Use[]>> => {
   }
 };
 
-export const fetchUsebyId = async (id: string): Promise<DataResponse<Use[]>> => {
+export const fetchUsebyId = async (id: number): Promise<DataResponse<Use[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<Use[]>>(`/use/${id}`);
     return res.data;
@@ -50,7 +50,7 @@ export const postUse = async (body: FormData) => {
   }
 };
 
-export const patchUse = async (id: string, body: FormData) => {
+export const patchUse = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<Use>(`/use/${id}`, body);
     return res.data;
@@ -60,7 +60,7 @@ export const patchUse = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteUse = async (id: string) => {
+export const deleteUse = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<Use>>(`/use/${id}`);
     return res.data;

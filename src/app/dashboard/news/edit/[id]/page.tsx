@@ -21,7 +21,7 @@ const formSchema = z.object({
   titleImage: z.instanceof(File).optional(),
 });
 
-const Page = ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const router = useRouter();
   const { id } = React.use(params);
   //TODO: add data with useEffect
@@ -47,7 +47,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
     try {
       await patchNews(id, formdata);
       toast.success("Berita berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/news"), 3000);
+      setInterval(() => router.push("/dashboard/news"), 3000);
     } catch (error) {
       errorHandling(error, "Berita Gagal diubah");
     }

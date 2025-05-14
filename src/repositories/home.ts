@@ -25,7 +25,7 @@ export const postHome = async (body: FormData) => {
   }
 };
 
-export const patchHome = async (id: string, body: FormData) => {
+export const patchHome = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<Home>(`/homepage/${id}`, body);
     return res.data;
@@ -35,7 +35,7 @@ export const patchHome = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteHome = async (id: string) => {
+export const deleteHome = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<Home>>(`/homepage/${id}`);
     return res.data;

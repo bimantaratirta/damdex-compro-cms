@@ -28,7 +28,7 @@ export const fetchProductNoPagination = async (): Promise<DataResponse<Product[]
   }
 };
 
-export const fetchProductbyId = async (id: string): Promise<DataResponse<Product[]>> => {
+export const fetchProductbyId = async (id: number): Promise<DataResponse<Product[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<Product[]>>(`/product/${id}`);
     return res.data;
@@ -50,7 +50,7 @@ export const postProduct = async (body: FormData) => {
   }
 };
 
-export const patchProduct = async (id: string, body: FormData) => {
+export const patchProduct = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<Product>(`/product/${id}`, body);
     return res.data;
@@ -60,7 +60,7 @@ export const patchProduct = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<Product>>(`/product/${id}`);
     return res.data;
@@ -86,7 +86,7 @@ export const fetchProductAdvantage = async (
   }
 };
 
-export const fetchProductAdvantagebyId = async (id: string): Promise<DataResponse<ProductAdvantage[]>> => {
+export const fetchProductAdvantagebyId = async (id: number): Promise<DataResponse<ProductAdvantage[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<ProductAdvantage[]>>(`/product/product-advantage/${id}`);
     return res.data;
@@ -108,7 +108,7 @@ export const postProductAdvantage = async (body: FormData) => {
   }
 };
 
-export const patchProductAdvantage = async (id: string, body: FormData) => {
+export const patchProductAdvantage = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<ProductAdvantage>(`/product/product-advantage/${id}`, body);
     return res.data;
@@ -118,7 +118,7 @@ export const patchProductAdvantage = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteProductAdvantage = async (id: string) => {
+export const deleteProductAdvantage = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<ProductAdvantage>>(`/product/product-advantage/${id}`);
     return res.data;

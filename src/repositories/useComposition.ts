@@ -4,7 +4,7 @@ import { UseComposition } from "@/lib/types/use";
 import axios from "axios";
 
 type UseCompositionPayload = {
-  useId: string;
+  useId: number;
   titleIDN: string;
   titleENG: string;
   descriptionIDN: string;
@@ -25,7 +25,7 @@ export const fetchUseCompositionNoPagination = async (): Promise<DataResponse<Us
   }
 };
 
-export const fetchUseCompositionbyId = async (id: string): Promise<DataResponse<UseComposition[]>> => {
+export const fetchUseCompositionbyId = async (id: number): Promise<DataResponse<UseComposition[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<UseComposition[]>>(`/use/use-composition/${id}`);
     return res.data;
@@ -47,7 +47,7 @@ export const postUseComposition = async (body: UseCompositionPayload) => {
   }
 };
 
-export const patchUseComposition = async (id: string, body: UseCompositionPayload) => {
+export const patchUseComposition = async (id: number, body: UseCompositionPayload) => {
   try {
     const res = await damdexAPI.patch<UseComposition>(`/use/use-composition/${id}`, body);
     return res.data;
@@ -57,7 +57,7 @@ export const patchUseComposition = async (id: string, body: UseCompositionPayloa
   }
 };
 
-export const deleteUseComposition = async (id: string) => {
+export const deleteUseComposition = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<UseComposition>>(`/use/use-composition/${id}`);
     return res.data;

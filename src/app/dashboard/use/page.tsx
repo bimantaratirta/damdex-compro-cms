@@ -3,20 +3,20 @@ import React from "react";
 import { DataGrid } from "@/components/datagrid";
 import { ColumnDef } from "@tanstack/react-table";
 import { usePaginationData } from "@/hooks/usePagination";
-import { Project } from "@/lib/types/project";
-import { useProject } from "@/swr-hooks/project/useProject";
 import { useRouter } from "next/navigation";
 import { DatagridActions } from "@/components/dataGridActions";
-import { deleteProject } from "@/repositories/project";
-import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { ConfirmDialog } from "@/components/confirmDialog";
+import { Button } from "@/components/ui/button";
+import { Use } from "@/lib/types/use";
+import { useUsage } from "@/swr-hooks/usage/useUsage";
+import { deleteUse } from "@/repositories/use";
 
 const Page = () => {
   const router = useRouter();
-  const [openDelete, setOpenDelete] = React.useState<undefined | Project>(undefined);
-  const projectColumns = React.useMemo<ColumnDef<Project>[]>(
+  const [openDelete, setOpenDelete] = React.useState<undefined | Use>(undefined);
+  const usageColumns = React.useMemo<ColumnDef<Use>[]>(
     () => [
       {
         accessorKey: "number",
@@ -29,12 +29,12 @@ const Page = () => {
       },
       {
         accessorKey: "titleIDN",
-        header: "Nama Projek IDN",
+        header: "Nama Kegunaan IDN",
         size: 400,
       },
       {
         accessorKey: "titleENG",
-        header: "Nama Projek EN",
+        header: "Nama Kegunaan EN",
         size: 300,
       },
       {
@@ -44,7 +44,7 @@ const Page = () => {
         cell: ({ row }) => {
           return (
             <DatagridActions
-              onEditClick={() => router.push(`/dashboard/project/edit/${row.original.id}`)}
+              onEditClick={() => router.push(`/dashboard/use/edit/${row.original.id}`)}
               onDeleteClick={() => setOpenDelete(row.original)}
             />
           );
@@ -55,32 +55,32 @@ const Page = () => {
   );
 
   const { handlePaginationModelChange, pagination } = usePaginationData();
-  const { data, loading, mutate } = useProject({
+  const { data, loading, mutate } = useUsage({
     page: pagination.pageIndex,
     limit: pagination.pageSize,
   });
   const defaultData = React.useMemo(() => data?.data.payload ?? [], [data]);
   const handleDelete = async (id: number) => {
     try {
-      await deleteProject(id);
-      toast.success("Project berhasil dihapus");
+      await deleteUse(id);
+      toast.success("Kegunaan berhasil dihapus");
       await mutate();
       setOpenDelete(undefined);
     } catch (error) {
-      errorHandling(error, "Project gagal dihapus");
+      errorHandling(error, "Kegunaan gagal dihapus");
     }
   };
 
   return (
     <div>
       <h1 className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
-        Project
+        Usage
       </h1>
       <div className="flex flex-row-reverse mb-2">
-        <Button onClick={() => router.push("/dashboard/project/create")}>Buat Projek Baru</Button>
+        <Button onClick={() => router.push("/dashboard/use/create")}>Buat Kegunaan Baru</Button>
       </div>
       <DataGrid
-        columns={projectColumns}
+        columns={usageColumns}
         data={defaultData}
         rowCount={data?.data.totalAllData}
         handlePaginationChange={handlePaginationModelChange}

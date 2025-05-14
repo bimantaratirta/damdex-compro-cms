@@ -61,7 +61,7 @@ const Page = () => {
     try {
       await postEventGallery(formdata);
       toast.success("Event berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/event-gallery"), 3000);
+      setInterval(() => router.push("/dashboard/event-gallery"), 3000);
     } catch (error) {
       errorHandling(error, "Event gagal dibuat");
     }

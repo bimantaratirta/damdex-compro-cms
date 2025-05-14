@@ -28,7 +28,7 @@ const data = [
   { id: "id2", name: "Product 2" },
 ];
 
-const Page = ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = React.use(params);
   const router = useRouter();
   //TODO: add data with useEffect
@@ -57,7 +57,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
       toast.success("Kelebihan Produk berhasil diubah", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
-      setInterval(() => router.push("/news"), 3000);
+      setInterval(() => router.push("/dashboard/product-advantage"), 3000);
     } catch (error) {
       errorHandling(error, "Kelebihan Produk Gagal diubah");
     }

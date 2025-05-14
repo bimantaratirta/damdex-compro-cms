@@ -9,7 +9,7 @@ export const useUsageCompositionOptions = () => {
   const loading = !data && !error;
 
   return {
-    audio: data,
+    data,
     loading,
     error,
     mutate,

@@ -2,7 +2,7 @@ import { Base } from "./response";
 
 export interface ProductAdvantage extends Base {
   product: string;
-  productId: string;
+  productid: number;
   heroImageUrl: string;
   heroImage: string;
   titleIDN: string;

@@ -54,7 +54,7 @@ const Page = () => {
     try {
       await postProject(formdata);
       toast.success("Projek berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/news"), 3000);
+      setInterval(() => router.push("/dashboard/project"), 3000);
     } catch (error) {
       errorHandling(error, "Projek Gagal Dibuat");
     }

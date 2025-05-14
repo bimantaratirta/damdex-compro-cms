@@ -7,7 +7,6 @@ export const login = async (data: { email: string; password: string }): Promise<
   try {
     const res = await damdexPublicAPI.post<DataResponse<UserData>>("/auth/login", data);
     localStorage.setItem("user-token", res.data.data.token);
-    localStorage.setItem("user-refresh-token", res.data.data.token);
     setCookie("status", "active");
     return res.data;
   } catch (error) {

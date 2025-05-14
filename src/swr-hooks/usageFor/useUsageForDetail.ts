@@ -1,15 +1,15 @@
 import useSWR from "swr";
 import { fetchUseForbyId } from "@/repositories/useFor";
 
-export const usageForKey = (id: string) => `/use/use-composition-use-for/${id}`;
+export const usageForKey = (id: number) => `/use/use-composition-use-for/${id}`;
 
-export const useUsageDetail = (id: string) => {
+export const useUsageForDetail = (id: number) => {
   const { data, error, mutate } = useSWR([usageForKey(id), id], () => fetchUseForbyId(id));
 
   const loading = !data && !error;
 
   return {
-    audio: data,
+    data,
     loading,
     error,
     mutate,

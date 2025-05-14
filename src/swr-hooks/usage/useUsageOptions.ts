@@ -7,7 +7,7 @@ export const useUsageOptions = () => {
   const loading = !data && !error;
 
   return {
-    audio: data,
+    data,
     loading,
     error,
     mutate,

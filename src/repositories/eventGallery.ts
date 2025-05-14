@@ -16,7 +16,7 @@ export const fetchEventGallery = async (params: PaginationParams): Promise<Pagin
   }
 };
 
-export const fetchEventGallerybyId = async (id: string): Promise<DataResponse<EventGallery[]>> => {
+export const fetchEventGallerybyId = async (id: number): Promise<DataResponse<EventGallery[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<EventGallery[]>>(`/gallery-event/${id}`);
     return res.data;
@@ -38,7 +38,7 @@ export const postEventGallery = async (body: FormData) => {
   }
 };
 
-export const patchEventGallery = async (id: string, body: FormData) => {
+export const patchEventGallery = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<EventGallery>(`/gallery-event/${id}`, body);
     return res.data;
@@ -48,7 +48,7 @@ export const patchEventGallery = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteEventGallery = async (id: string) => {
+export const deleteEventGallery = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<EventGallery>>(`/gallery-event/${id}`);
     return res.data;

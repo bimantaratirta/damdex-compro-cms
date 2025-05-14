@@ -23,7 +23,7 @@ const formSchema = z.object({
   heroImage: z.instanceof(File),
 });
 
-const Page = ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = use(params);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,7 +51,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
     try {
       await patchProject(id, formdata);
       toast.success("Projek berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/news"), 3000);
+      setInterval(() => router.push("/dashboard/project"), 3000);
     } catch (error) {
       errorHandling(error, "Projek Gagal Dibuat");
     }

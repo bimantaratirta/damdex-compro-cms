@@ -27,7 +27,7 @@ const formSchema = z.object({
   eventDate: z.date({ required_error: "Tanggal event harus diisi" }),
 });
 
-const Page = ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const router = useRouter();
   const { id } = React.use(params);
   //TODO: add data with useEffect
@@ -63,7 +63,7 @@ const Page = ({ params }: { params: Promise<{ id: string }> }) => {
     try {
       await patchEventGallery(id, formdata);
       toast.success("Event berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/event-gallery"), 3000);
+      setInterval(() => router.push("/dashboard/event-gallery"), 3000);
     } catch (error) {
       errorHandling(error, "Event gagal diubah");
     }

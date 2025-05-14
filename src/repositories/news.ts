@@ -16,7 +16,7 @@ export const fetchNews = async (params: PaginationParams): Promise<PaginatedData
   }
 };
 
-export const fetchNewsbyId = async (id: string): Promise<DataResponse<News[]>> => {
+export const fetchNewsbyId = async (id: number): Promise<DataResponse<News[]>> => {
   try {
     const res = await damdexPublicAPI.get<DataResponse<News[]>>(`/news/${id}`);
     return res.data;
@@ -38,7 +38,7 @@ export const postNews = async (body: FormData) => {
   }
 };
 
-export const patchNews = async (id: string, body: FormData) => {
+export const patchNews = async (id: number, body: FormData) => {
   try {
     const res = await damdexAPI.patch<News>(`/news/${id}`, body);
     return res.data;
@@ -48,7 +48,7 @@ export const patchNews = async (id: string, body: FormData) => {
   }
 };
 
-export const deleteNews = async (id: string) => {
+export const deleteNews = async (id: number) => {
   try {
     const res = await damdexAPI.delete<DataResponse<News>>(`/news/${id}`);
     return res.data;
