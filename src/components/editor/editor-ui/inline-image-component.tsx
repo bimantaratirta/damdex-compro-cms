@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 import * as React from "react";
 import { Suspense, useCallback, useEffect, useRef, useState, JSX } from "react";
 
@@ -44,6 +36,8 @@ import type { Position } from "../nodes/inline-image-node";
 import { $isInlineImageNode, InlineImageNode } from "../nodes/inline-image-node";
 import { LinkPlugin } from "../plugins/link-plugin";
 import { ContentEditable } from "./content-editable";
+import { $isImageNode } from "../nodes/image-node";
+import { ImageResizer } from "./image-resizer";
 
 const imageCache = new Set();
 
@@ -55,6 +49,9 @@ function useSuspenseImage(src: string) {
       img.onload = () => {
         imageCache.add(src);
         resolve(null);
+      };
+      img.onerror = () => {
+        imageCache.add(src);
       };
     });
   }
@@ -68,6 +65,8 @@ function LazyImage({
   width,
   height,
   position,
+  maxWidth,
+  onError,
 }: {
   altText: string;
   className: string | null;
@@ -76,6 +75,8 @@ function LazyImage({
   src: string;
   width: "inherit" | number;
   position: Position;
+  onError: () => void;
+  maxWidth: number;
 }): JSX.Element {
   useSuspenseImage(src);
   return (
@@ -89,6 +90,22 @@ function LazyImage({
         display: "block",
         height,
         width,
+        maxWidth,
+      }}
+      onError={onError}
+      draggable="false"
+    />
+  );
+}
+
+function BrokenImage(): JSX.Element {
+  return (
+    <img
+      src={""}
+      style={{
+        height: 200,
+        opacity: 0.2,
+        width: 200,
       }}
       draggable="false"
     />
@@ -110,13 +127,13 @@ export function UpdateInlineImageDialog({
   const [showCaption, setShowCaption] = useState(node.getShowCaption());
   const [position, setPosition] = useState<Position>(node.getPosition());
 
-  const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCaption(e.target.checked);
-  };
+  // const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setShowCaption(e.target.checked);
+  // };
 
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as Position);
-  };
+  // const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setPosition(e.target.value as Position);
+  // };
 
   const handleOnConfirm = () => {
     const payload = { altText, position, showCaption };
@@ -153,7 +170,6 @@ export function UpdateInlineImageDialog({
           <SelectContent>
             <SelectItem value="left">Left</SelectItem>
             <SelectItem value="right">Right</SelectItem>
-            <SelectItem value="full">Full Width</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -188,6 +204,9 @@ export default function InlineImageComponent({
   showCaption,
   caption,
   position,
+  resizable,
+  maxWidth,
+  captionsEnabled,
 }: {
   altText: string;
   caption: LexicalEditor;
@@ -197,6 +216,9 @@ export default function InlineImageComponent({
   src: string;
   width: "inherit" | number;
   position: Position;
+  resizable: boolean;
+  maxWidth: number;
+  captionsEnabled: boolean;
 }): JSX.Element {
   const [modal, showModal] = useEditorModal();
   const imageRef = useRef<null | HTMLImageElement>(null);
@@ -206,6 +228,8 @@ export default function InlineImageComponent({
   const [selection, setSelection] = useState<BaseSelection | null>(null);
   const activeEditorRef = useRef<LexicalEditor | null>(null);
   const isEditable = useLexicalEditable();
+  const [isResizing, setIsResizing] = useState<boolean>(false);
+  const [isLoadError, setIsLoadError] = useState<boolean>(false);
 
   const $onDelete = useCallback(
     (payload: KeyboardEvent) => {
@@ -268,6 +292,33 @@ export default function InlineImageComponent({
     [caption, editor, setSelected]
   );
 
+  const setShowCaption = () => {
+    editor.update(() => {
+      const node = $getNodeByKey(nodeKey);
+      if ($isImageNode(node)) {
+        node.setShowCaption(true);
+      }
+    });
+  };
+
+  const onResizeEnd = (nextWidth: "inherit" | number, nextHeight: "inherit" | number) => {
+    // Delay hiding the resize bars for click case
+    setTimeout(() => {
+      setIsResizing(false);
+    }, 200);
+
+    editor.update(() => {
+      const node = $getNodeByKey(nodeKey);
+      if ($isImageNode(node)) {
+        node.setWidthAndHeight(nextWidth, nextHeight);
+      }
+    });
+  };
+
+  const onResizeStart = () => {
+    setIsResizing(true);
+  };
+
   useEffect(() => {
     let isMounted = true;
     const unregister = mergeRegister(
@@ -288,6 +339,9 @@ export default function InlineImageComponent({
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
+          if (isResizing) {
+            return true;
+          }
           if (event.target === imageRef.current) {
             if (event.shiftKey) {
               setSelected(!isSelected);
@@ -324,48 +378,57 @@ export default function InlineImageComponent({
       isMounted = false;
       unregister();
     };
-  }, [clearSelection, editor, isSelected, nodeKey, $onDelete, $onEnter, $onEscape, setSelected]);
+  }, [clearSelection, editor, isSelected, nodeKey, $onDelete, $onEnter, $onEscape, setSelected, isResizing]);
 
-  const draggable = isSelected && $isNodeSelection(selection);
-  const isFocused = isSelected && isEditable;
+  const draggable = isSelected && $isNodeSelection(selection) && !isResizing;
+  const isFocused = (isSelected || isResizing) && isEditable;
   return (
     <Suspense fallback={null}>
       <>
-        <span draggable={draggable}>
-          {isEditable && (
-            <Button
-              className="image-edit-button absolute right-1 top-1"
-              variant="outline"
-              ref={buttonRef}
-              onClick={() => {
-                showModal("Update Inline Image", (onClose) => (
-                  <UpdateInlineImageDialog
-                    activeEditor={editor}
-                    nodeKey={nodeKey}
-                    onClose={onClose}
-                  />
-                ));
-              }}
-            >
-              Edit
-            </Button>
+        <div draggable={draggable}>
+          {isLoadError ? (
+            <BrokenImage />
+          ) : (
+            <>
+              {isEditable && (
+                <Button
+                  className="image-edit-button absolute right-1 top-1"
+                  variant="outline"
+                  ref={buttonRef}
+                  onClick={() => {
+                    showModal("Update Inline Image", (onClose) => (
+                      <UpdateInlineImageDialog
+                        activeEditor={editor}
+                        nodeKey={nodeKey}
+                        onClose={onClose}
+                      />
+                    ));
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
+              <LazyImage
+                className={`max-w-full cursor-default ${
+                  isFocused
+                    ? `${
+                        $isNodeSelection(selection) ? "draggable cursor-grab active:cursor-grabbing" : ""
+                      } focused ring-2 ring-primary ring-offset-2`
+                    : null
+                }`}
+                src={src}
+                altText={altText}
+                imageRef={imageRef}
+                width={width}
+                position={position}
+                height={height}
+                maxWidth={maxWidth}
+                onError={() => setIsLoadError(true)}
+              />
+            </>
           )}
-          <LazyImage
-            className={`max-w-full cursor-default ${
-              isFocused
-                ? `${
-                    $isNodeSelection(selection) ? "draggable cursor-grab active:cursor-grabbing" : ""
-                  } focused ring-2 ring-primary ring-offset-2`
-                : null
-            }`}
-            src={src}
-            altText={altText}
-            imageRef={imageRef}
-            width={width}
-            height={height}
-            position={position}
-          />
-        </span>
+        </div>
+
         {showCaption && (
           <div className="image-caption-container absolute bottom-1 left-0 right-0 m-0 block min-w-[100px] overflow-hidden border-t bg-white/90 p-0">
             <LexicalNestedComposer initialEditor={caption}>
@@ -383,6 +446,19 @@ export default function InlineImageComponent({
               />
             </LexicalNestedComposer>
           </div>
+        )}
+        {resizable && $isNodeSelection(selection) && isFocused && (
+          <ImageResizer
+            showCaption={showCaption}
+            setShowCaption={setShowCaption}
+            editor={editor}
+            buttonRef={buttonRef}
+            imageRef={imageRef}
+            maxWidth={maxWidth}
+            onResizeStart={onResizeStart}
+            onResizeEnd={onResizeEnd}
+            captionsEnabled={!isLoadError && captionsEnabled}
+          />
         )}
       </>
       {modal}

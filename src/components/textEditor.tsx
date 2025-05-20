@@ -40,6 +40,7 @@ import { Control } from "react-hook-form";
 import { InsertInlineImage } from "./editor/plugins/toolbar/block-insert/insert-inline-image";
 import { InlineImageNode } from "@/components/editor/nodes/inline-image-node";
 import { InlineImagePlugin } from "@/components/editor/plugins/inline-image-plugin";
+import { LinkNode } from "@lexical/link";
 
 export const HtmlPlugin = ({ onHtmlChanged }: { onHtmlChanged: (html: string) => void }) => {
   const [editor] = useLexicalComposerContext();
@@ -94,7 +95,17 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
   const editorConfig: InitialConfigType = {
     namespace: "Editor",
     theme: editorTheme,
-    nodes: [HeadingNode, ParagraphNode, TextNode, QuoteNode, ListItemNode, ListNode, ImageNode, InlineImageNode],
+    nodes: [
+      HeadingNode,
+      ParagraphNode,
+      TextNode,
+      QuoteNode,
+      ListItemNode,
+      ListNode,
+      ImageNode,
+      InlineImageNode,
+      LinkNode,
+    ],
     onError: (error: Error) => {
       console.error(error);
     },
@@ -157,7 +168,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                             <div ref={onRef}>
                               <ContentEditable
                                 placeholder={placeholder}
-                                className="ContentEditable__root relative block min-h-72 overflow-auto min-h-full px-8 py-4 focus:outline-none h-72"
+                                className="ContentEditable__root relative block overflow-auto min-h-full px-8 py-4 focus:outline-none h-72"
                               />
                             </div>
                           </div>

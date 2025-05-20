@@ -41,6 +41,16 @@ const menuItems = [
     url: "/dashboard/use",
   },
   {
+    name: "Use Composition",
+    icon: Folder,
+    url: "/dashboard/use-composition",
+  },
+  {
+    name: "Use for",
+    icon: Folder,
+    url: "/dashboard/use-for",
+  },
+  {
     name: "Product",
     icon: Folder,
     url: "/dashboard/product",

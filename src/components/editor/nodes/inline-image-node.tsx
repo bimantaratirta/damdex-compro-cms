@@ -1,10 +1,3 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 import * as React from "react";
 import { Suspense, JSX } from "react";
 
@@ -35,6 +28,8 @@ export interface InlineImagePayload {
   src: string;
   width?: number;
   position?: Position;
+  maxWidth?: number;
+  captionsEnabled?: boolean;
 }
 
 export interface UpdateInlineImagePayload {
@@ -61,6 +56,7 @@ export type SerializedInlineImageNode = Spread<
     src: string;
     width?: number;
     position?: Position;
+    maxWidth: number;
   },
   SerializedLexicalNode
 >;
@@ -73,6 +69,8 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
   __showCaption: boolean;
   __caption: LexicalEditor;
   __position: Position;
+  __maxWidth: number;
+  __captionsEnabled: boolean;
 
   static getType(): string {
     return "inline-image";
@@ -83,21 +81,24 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
       node.__src,
       node.__altText,
       node.__position,
+      node.__maxWidth,
       node.__width,
       node.__height,
       node.__showCaption,
       node.__caption,
+      node.__captionsEnabled,
       node.__key
     );
   }
 
   static importJSON(serializedNode: SerializedInlineImageNode): InlineImageNode {
-    const { altText, height, width, caption, src, showCaption, position } = serializedNode;
+    const { altText, height, width, maxWidth, caption, src, showCaption, position } = serializedNode;
     const node = $createInlineImageNode({
       altText,
       height,
       position,
       showCaption,
+      maxWidth,
       src,
       width,
     });
@@ -122,20 +123,24 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
     src: string,
     altText: string,
     position: Position,
+    maxWidth: number,
     width?: "inherit" | number,
     height?: "inherit" | number,
     showCaption?: boolean,
     caption?: LexicalEditor,
+    captionsEnabled?: boolean,
     key?: NodeKey
   ) {
     super(key);
     this.__src = src;
     this.__altText = altText;
+    this.__maxWidth = maxWidth;
     this.__width = width || "inherit";
     this.__height = height || "inherit";
     this.__showCaption = showCaption || false;
     this.__caption = caption || createEditor();
     this.__position = position;
+    this.__captionsEnabled = captionsEnabled || captionsEnabled === undefined;
   }
 
   exportDOM(): DOMExportOutput {
@@ -152,6 +157,7 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
       altText: this.getAltText(),
       caption: this.__caption.toJSON(),
       height: this.__height === "inherit" ? 0 : this.__height,
+      maxWidth: this.__maxWidth,
       position: this.__position,
       showCaption: this.__showCaption,
       src: this.getSrc(),
@@ -216,9 +222,9 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
   getPositionClassName(): string {
     switch (this.__position) {
       case "left":
-        return "float-left w-1/2";
+        return "float-left";
       case "right":
-        return "float-right w-1/2 ";
+        return "float-right ";
       case "full":
         return "w-full";
       default:
@@ -252,12 +258,15 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
         <InlineImageComponent
           src={this.__src}
           altText={this.__altText}
+          maxWidth={this.__maxWidth}
           width={this.__width}
           height={this.__height}
           nodeKey={this.getKey()}
           showCaption={this.__showCaption}
           caption={this.__caption}
           position={this.__position}
+          captionsEnabled={this.__captionsEnabled}
+          resizable={true}
         />
       </Suspense>
     );
@@ -267,14 +276,18 @@ export class InlineImageNode extends DecoratorNode<JSX.Element> {
 export function $createInlineImageNode({
   altText,
   position,
+  maxWidth = 500,
   height,
   src,
   width,
   showCaption,
   caption,
+  captionsEnabled,
   key,
 }: InlineImagePayload): InlineImageNode {
-  return $applyNodeReplacement(new InlineImageNode(src, altText, position, width, height, showCaption, caption, key));
+  return $applyNodeReplacement(
+    new InlineImageNode(src, altText, position, maxWidth, width, height, showCaption, caption, captionsEnabled, key)
+  );
 }
 
 export function $isInlineImageNode(node: LexicalNode | null | undefined): node is InlineImageNode {
