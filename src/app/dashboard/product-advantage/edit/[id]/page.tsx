@@ -31,7 +31,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { data: product, loading: productLoading } = useProductOptions();
   const { data: advantage, loading: advantageLoading, mutate } = useProductAdvantageDetail(id);
 
-  //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
