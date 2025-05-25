@@ -13,33 +13,33 @@ import { errorHandling } from "@/lib/utils";
 import { TextEditor } from "@/components/textEditor";
 import { patchProductAdvantage } from "@/repositories/product";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useProductOptions } from "@/swr-hooks/product/useProductOption";
+import { useProductAdvantageDetail } from "@/swr-hooks/product/useProductAdvantageDetail";
 
 const formSchema = z.object({
   productId: z.string().min(1, { message: "Id Produk harus diisi" }),
   titleIDN: z.string().min(1, { message: "Nama Kelebihan Produk Bahasa Indonesia harus diisi" }),
-  contentIDN: z.string().min(1, { message: "Konten Kelebihan Produk Bahasa Indonesia harus diisi" }),
+  descriptionIDN: z.string().min(1, { message: "Konten Kelebihan Produk Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Kelebihan Produk Bahasa Inggris harus diisi" }),
-  contentENG: z.string().min(1, { message: "Konten Kelebihan Produk Bahasa Inggris harus diisi" }),
-  heroImage: z.instanceof(File),
+  descriptionENG: z.string().min(1, { message: "Konten Kelebihan Produk Bahasa Inggris harus diisi" }),
+  heroImage: z.instanceof(File).optional(),
 });
-
-const data = [
-  { id: "id1", name: "Product 1" },
-  { id: "id2", name: "Product 2" },
-];
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = React.use(params);
   const router = useRouter();
+  const { data: product, loading: productLoading } = useProductOptions();
+  const { data: advantage, loading: advantageLoading, mutate } = useProductAdvantageDetail(id);
+
   //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      productId: "",
-      titleIDN: "",
-      contentIDN: "",
-      titleENG: "",
-      contentENG: "",
+      productId: advantage?.data.productid.toString(),
+      titleIDN: advantage?.data.titleIDN,
+      descriptionIDN: advantage?.data.descriptionIDN,
+      titleENG: advantage?.data.titleENG,
+      descriptionENG: advantage?.data.descriptionENG,
       heroImage: new File([], ""),
     },
   });
@@ -48,26 +48,41 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     const formdata = new FormData();
     formdata.append("productId", values.productId);
     formdata.append("titleIDN", values.titleIDN);
-    formdata.append("contentIDN", values.contentIDN);
+    formdata.append("descriptionIDN", values.descriptionIDN);
     formdata.append("titleENG", values.titleENG);
-    formdata.append("contentENG", values.contentENG);
+    formdata.append("descriptionENG", values.descriptionENG);
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await patchProductAdvantage(id, formdata);
       toast.success("Kelebihan Produk berhasil diubah", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
+      await mutate();
       setInterval(() => router.push("/dashboard/product-advantage"), 3000);
     } catch (error) {
       errorHandling(error, "Kelebihan Produk Gagal diubah");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      productId: advantage?.data.productid.toString(),
+      titleIDN: advantage?.data.titleIDN,
+      descriptionIDN: advantage?.data.descriptionIDN,
+      titleENG: advantage?.data.titleENG,
+      descriptionENG: advantage?.data.descriptionENG,
+      heroImage: new File([], ""),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [advantageLoading, productLoading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Edit Kelebihan Produk {id}</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah Kelebihan Produk {advantage?.data.titleIDN}
+          </p>
           <FormField
             control={form.control}
             name={"productId"}
@@ -85,12 +100,12 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {data?.map((val, idx) => (
+                        {product?.data.map((val, idx) => (
                           <SelectItem
                             key={idx}
-                            value={val.id}
+                            value={val.id.toString()}
                           >
-                            {val.name}
+                            {val.titleIDN}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -110,7 +125,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentIDN"
+            name="descriptionIDN"
             placeholder="Konten Kelebihan Produk Bahasa Indonesia"
             label="Konten Kelebihan Produk Bahasa Indonesia"
           />
@@ -123,7 +138,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentENG"
+            name="descriptionENG"
             placeholder="Konten Kelebihan Produk Bahasa Inggris"
             label="Konten Kelebihan Produk Bahasa Inggris"
           />

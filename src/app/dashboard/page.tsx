@@ -3,9 +3,8 @@
 const Page = () => {
   return (
     <div>
-      <p>
-        Selamat datang di laman pengaturan konten damdex, silakan pilih menu pada bagian samping untuk mulai mengubah
-        konten
+      <p className="text-3xl font-bold dark:text-white">
+        Selamat datang di laman pengaturan konten damdex, silakan pilih menu pada untuk mulai mengubah konten
       </p>
     </div>
   );

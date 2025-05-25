@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
 import { TextEditor } from "@/components/textEditor";
+import { useNewsDetail } from "@/swr-hooks/news/useNewsDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Berita Bahasa Indonesia harus diisi" }),
@@ -24,14 +25,15 @@ const formSchema = z.object({
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const router = useRouter();
   const { id } = React.use(params);
-  //TODO: add data with useEffect
+  const { data, loading, mutate } = useNewsDetail(id);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      contentIDN: "",
-      titleENG: "",
-      contentENG: "",
+      titleIDN: data?.data.titleIDN,
+      contentIDN: data?.data.contentIDN,
+      titleENG: data?.data.titleENG,
+      contentENG: data?.data.contentENG,
       titleImage: new File([], ""),
     },
   });
@@ -47,17 +49,31 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     try {
       await patchNews(id, formdata);
       toast.success("Berita berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await mutate();
       setInterval(() => router.push("/dashboard/news"), 3000);
     } catch (error) {
       errorHandling(error, "Berita Gagal diubah");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      titleIDN: data?.data.titleIDN,
+      contentIDN: data?.data.contentIDN,
+      titleENG: data?.data.titleENG,
+      contentENG: data?.data.contentENG,
+      titleImage: new File([], ""),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Edit Berita {id}</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Edit Berita {id}
+          </p>
           <InputField
             formControl={form.control}
             name="titleIDN"

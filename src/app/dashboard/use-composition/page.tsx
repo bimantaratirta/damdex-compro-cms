@@ -33,7 +33,7 @@ const Page = () => {
         Komposisi
       </h1>
       <div className="flex flex-row-reverse mb-2">
-        <Button onClick={() => router.push("/dashboard/product/create")}>Buat Komposisi Baru</Button>
+        <Button onClick={() => router.push("/dashboard/use-composition/create")}>Buat Komposisi Baru</Button>
       </div>
       <div className="grid grid-flow-row grid-cols-4 gap-2">
         {data &&

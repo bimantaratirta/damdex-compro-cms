@@ -129,7 +129,9 @@ const Page = () => {
 
   return (
     <>
-      <p>Create Homepage Data</p>
+      <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+        Create Homepage Data
+      </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

@@ -57,41 +57,43 @@ const Page = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name={"useCompositionId"}
-          render={({ field }) => (
-            <FormItem className={"flex flex-col"}>
-              <FormLabel>ID kegunaan</FormLabel>
-              <FormControl>
-                <Select
-                  defaultValue={field.value.toString()}
-                  onValueChange={(value) => field.onChange(value)}
-                  {...field}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="ID kegunaan" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {data?.data.map((val, idx) => (
-                        <SelectItem
-                          key={idx}
-                          value={val.id.toString()}
-                        >
-                          {val.titleIDN}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <div className="flex flex-col space-y-4 my-2">
-          <p>Buat Kegunaan Komposisi</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Buat Kegunaan Komposisi
+          </p>
+          <FormField
+            control={form.control}
+            name={"useCompositionId"}
+            render={({ field }) => (
+              <FormItem className={"flex flex-col"}>
+                <FormLabel>ID kegunaan</FormLabel>
+                <FormControl>
+                  <Select
+                    defaultValue={field.value.toString()}
+                    onValueChange={(value) => field.onChange(value)}
+                    {...field}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="ID kegunaan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {data?.data.map((val, idx) => (
+                          <SelectItem
+                            key={idx}
+                            value={val.id.toString()}
+                          >
+                            {val.titleIDN}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <InputField
             formControl={form.control}
             name="titleIDN"

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { TextEditor } from "@/components/textEditor";
+import { useEventDetail } from "@/swr-hooks/eventGallery/useEventDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Judul Bahasa Indonesia harus diisi" }),
@@ -23,32 +24,32 @@ const formSchema = z.object({
   eventDescriptionENG: z.string().min(1, { message: "Deskripsi Bahasa Inggris harus diisi" }),
   eventVenueENG: z.string().min(1, { message: "Venue Bahasa Inggris harus diisi" }),
   eventThemeENG: z.string().min(1, { message: "Tema Bahasa Inggris harus diisi" }),
-  heroImage: z.instanceof(File),
+  heroImage: z.instanceof(File).optional(),
   eventDate: z.date({ required_error: "Tanggal event harus diisi" }),
 });
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const router = useRouter();
   const { id } = React.use(params);
-  //TODO: add data with useEffect
+  const { data, loading, mutate } = useEventDetail(id);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      eventDescriptionIDN: "",
-      eventVenueIDN: "",
-      eventThemeIDN: "",
-      titleENG: "",
-      eventDescriptionENG: "",
-      eventVenueENG: "",
-      eventThemeENG: "",
+      titleIDN: data?.data.titleIDN,
+      eventDescriptionIDN: data?.data.eventDescriptionIDN,
+      eventVenueIDN: data?.data.eventVenueIDN,
+      eventThemeIDN: data?.data.eventThemeIDN,
+      titleENG: data?.data.titleENG,
+      eventDescriptionENG: data?.data.eventDescriptionENG,
+      eventVenueENG: data?.data.eventVenueENG,
+      eventThemeENG: data?.data.eventThemeENG,
       heroImage: new File([], ""),
-      eventDate: new Date(),
+      eventDate: data && data.data.eventDate ? new Date(data.data.eventDate) : new Date(),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (values.heroImage.name === "") toast.error("Gambar event belum ada.");
     const formdata = new FormData();
     formdata.append("eventDate", values.eventDate.toISOString());
     formdata.append("titleIDN", values.titleIDN);
@@ -59,21 +60,41 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     formdata.append("eventDescriptionENG", values.eventDescriptionENG);
     formdata.append("eventVenueENG", values.eventVenueENG);
     formdata.append("eventThemeENG", values.eventThemeENG);
-    if (values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
+    if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await patchEventGallery(id, formdata);
       toast.success("Event berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await mutate();
       setInterval(() => router.push("/dashboard/event-gallery"), 3000);
     } catch (error) {
       errorHandling(error, "Event gagal diubah");
     }
   };
 
+  const { reset } = form;
+
+  React.useEffect(() => {
+    reset({
+      titleIDN: data?.data.titleIDN,
+      eventDescriptionIDN: data?.data.eventDescriptionIDN,
+      eventVenueIDN: data?.data.eventVenueIDN,
+      eventThemeIDN: data?.data.eventThemeIDN,
+      titleENG: data?.data.titleENG,
+      eventDescriptionENG: data?.data.eventDescriptionENG,
+      eventVenueENG: data?.data.eventVenueENG,
+      eventThemeENG: data?.data.eventThemeENG,
+      eventDate: data && data.data.eventDate ? new Date(data.data.eventDate) : new Date(),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Edit Event {id}</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah Event {data?.data.titleIDN}
+          </p>
           <InputField
             formControl={form.control}
             name="titleIDN"

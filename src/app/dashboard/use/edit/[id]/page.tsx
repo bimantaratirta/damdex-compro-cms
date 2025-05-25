@@ -11,21 +11,24 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
 import { patchUse } from "@/repositories/use";
+import { useUsageDetail } from "@/swr-hooks/usage/useUsageDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Kegunaan Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Kegunaan Bahasa Inggris harus diisi" }),
-  heroImage: z.instanceof(File),
+  heroImage: z.instanceof(File).optional(),
 });
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = React.use(params);
   const router = useRouter();
+  const { data, loading, mutate } = useUsageDetail(id);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      titleENG: "",
+      titleIDN: data?.data.titleIDN,
+      titleENG: data?.data.titleENG,
       heroImage: new File([], ""),
     },
   });
@@ -38,17 +41,29 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     try {
       await patchUse(id, formdata);
       toast.success("Kegunaan berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await mutate();
       setInterval(() => router.push("/dashboard/use"), 3000);
     } catch (error) {
       errorHandling(error, "Kegunaan Gagal diubah");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      titleIDN: data?.data.titleIDN,
+      titleENG: data?.data.titleENG,
+      heroImage: new File([], ""),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Ubah Kegunaan</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah {data?.data.titleIDN}
+          </p>
           <InputField
             formControl={form.control}
             name="titleIDN"

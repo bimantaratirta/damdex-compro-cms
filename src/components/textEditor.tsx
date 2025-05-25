@@ -146,7 +146,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                             <FormatQuote />
                           </BlockFormatDropDown>
                           <FontFamilyToolbarPlugin />
-                          <FontSizeToolbarPlugin />
+                          {/* <FontSizeToolbarPlugin /> */}
                           <FontFormatToolbarPlugin format="bold" />
                           <FontFormatToolbarPlugin format="italic" />
                           <FontFormatToolbarPlugin format="underline" />

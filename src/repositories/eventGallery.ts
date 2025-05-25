@@ -16,9 +16,9 @@ export const fetchEventGallery = async (params: PaginationParams): Promise<Pagin
   }
 };
 
-export const fetchEventGallerybyId = async (id: number): Promise<DataResponse<EventGallery[]>> => {
+export const fetchEventGallerybyId = async (id: number): Promise<DataResponse<EventGallery>> => {
   try {
-    const res = await damdexPublicAPI.get<DataResponse<EventGallery[]>>(`/gallery-event/${id}`);
+    const res = await damdexPublicAPI.get<DataResponse<EventGallery>>(`/gallery-event/${id}`);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

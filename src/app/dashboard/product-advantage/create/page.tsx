@@ -69,7 +69,9 @@ const Page = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Buat Kelebihan Produk</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Buat Kelebihan Produk
+          </p>
           <FormField
             control={form.control}
             name={"productId"}

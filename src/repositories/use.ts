@@ -28,9 +28,9 @@ export const fetchUseNoPagination = async (): Promise<DataResponse<Use[]>> => {
   }
 };
 
-export const fetchUsebyId = async (id: number): Promise<DataResponse<Use[]>> => {
+export const fetchUsebyId = async (id: number): Promise<DataResponse<Use>> => {
   try {
-    const res = await damdexPublicAPI.get<DataResponse<Use[]>>(`/use/${id}`);
+    const res = await damdexPublicAPI.get<DataResponse<Use>>(`/use/${id}`);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

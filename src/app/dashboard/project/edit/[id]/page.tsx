@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TextEditor } from "@/components/textEditor";
 import { patchProject } from "@/repositories/project";
+import { useProjectDetail } from "@/swr-hooks/project/useProjectDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "judul Projek Bahasa Indonesia harus diisi" }),
@@ -20,21 +21,23 @@ const formSchema = z.object({
   titleENG: z.string().min(1, { message: "judul Projek Bahasa Inggris harus diisi" }),
   firstDescriptionENG: z.string().min(1, { message: "Konten Projek Bahasa Indonesia harus diisi" }),
   secondDescriptionENG: z.string().min(1, { message: "Konten Projek Bahasa Indonesia harus diisi" }),
-  heroImage: z.instanceof(File),
+  heroImage: z.instanceof(File).optional(),
 });
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = use(params);
   const router = useRouter();
+  const { data, loading, mutate } = useProjectDetail(id);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      firstDescriptionIDN: "",
-      secondDescriptionIDN: "",
-      titleENG: "",
-      firstDescriptionENG: "",
-      secondDescriptionENG: "",
+      titleIDN: data?.data.titleIDN,
+      firstDescriptionIDN: data?.data.firstDescriptionIDN,
+      secondDescriptionIDN: data?.data.secondDescriptionIDN,
+      titleENG: data?.data.titleENG,
+      firstDescriptionENG: data?.data.firstDescriptionENG,
+      secondDescriptionENG: data?.data.secondDescriptionENG,
       heroImage: new File([], ""),
     },
   });
@@ -51,17 +54,32 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     try {
       await patchProject(id, formdata);
       toast.success("Projek berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await mutate();
       setInterval(() => router.push("/dashboard/project"), 3000);
     } catch (error) {
       errorHandling(error, "Projek Gagal Dibuat");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      titleIDN: data?.data.titleIDN,
+      firstDescriptionIDN: data?.data.firstDescriptionIDN,
+      secondDescriptionIDN: data?.data.secondDescriptionIDN,
+      titleENG: data?.data.titleENG,
+      firstDescriptionENG: data?.data.firstDescriptionENG,
+      secondDescriptionENG: data?.data.secondDescriptionENG,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Ubah Projek {id}</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah Projek {data?.data.titleIDN}
+          </p>
           <InputField
             formControl={form.control}
             name="titleIDN"

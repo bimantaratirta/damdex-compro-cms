@@ -12,26 +12,28 @@ import { toast } from "sonner";
 import { errorHandling } from "@/lib/utils";
 import { TextEditor } from "@/components/textEditor";
 import { patchProduct } from "@/repositories/product";
+import { useProductDetail } from "@/swr-hooks/product/useProductDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Produk Bahasa Indonesia harus diisi" }),
-  contentIDN: z.string().min(1, { message: "Konten Produk Bahasa Indonesia harus diisi" }),
+  descriptionIDN: z.string().min(1, { message: "Deskripsi Produk Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Produk Bahasa Inggris harus diisi" }),
-  contentENG: z.string().min(1, { message: "Konten Produk Bahasa Inggris harus diisi" }),
+  descriptionENG: z.string().min(1, { message: "Konten Produk Bahasa Inggris harus diisi" }),
   heroImage: z.instanceof(File).optional(),
 });
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const router = useRouter();
   const { id } = React.use(params);
-  //TODO: add data with useEffect
+  const { data, loading, mutate } = useProductDetail(id);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      contentIDN: "",
-      titleENG: "",
-      contentENG: "",
+      titleIDN: data?.data.titleIDN,
+      descriptionIDN: data?.data.descriptionIDN,
+      titleENG: data?.data.titleENG,
+      descriptionENG: data?.data.descriptionENG,
       heroImage: new File([], ""),
     },
   });
@@ -39,24 +41,38 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formdata = new FormData();
     formdata.append("titleIDN", values.titleIDN);
-    formdata.append("contentIDN", values.contentIDN);
+    formdata.append("descriptionIDN", values.descriptionIDN);
     formdata.append("titleENG", values.titleENG);
-    formdata.append("contentENG", values.contentENG);
+    formdata.append("descriptionENG", values.descriptionENG);
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await patchProduct(id, formdata);
       toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      await mutate();
       setInterval(() => router.push("/dashboard/product"), 3000);
     } catch (error) {
       errorHandling(error, "Produk Gagal diubah");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      titleIDN: data?.data.titleIDN,
+      descriptionIDN: data?.data.descriptionIDN,
+      titleENG: data?.data.titleENG,
+      descriptionENG: data?.data.descriptionENG,
+      heroImage: new File([], ""),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
-          <p>Edit Produk {id}</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah Produk {data?.data.titleIDN}
+          </p>
           <InputField
             formControl={form.control}
             name="titleIDN"
@@ -66,7 +82,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentIDN"
+            name="descriptionIDN"
             placeholder="Konten Produk Bahasa Indonesia"
             label="Konten Produk Bahasa Indonesia"
           />
@@ -79,7 +95,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentENG"
+            name="descriptionENG"
             placeholder="Konten Produk Bahasa Inggris"
             label="Konten Produk Bahasa Inggris"
           />

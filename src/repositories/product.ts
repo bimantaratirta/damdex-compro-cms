@@ -28,9 +28,9 @@ export const fetchProductNoPagination = async (): Promise<DataResponse<Product[]
   }
 };
 
-export const fetchProductbyId = async (id: number): Promise<DataResponse<Product[]>> => {
+export const fetchProductbyId = async (id: number): Promise<DataResponse<Product>> => {
   try {
-    const res = await damdexPublicAPI.get<DataResponse<Product[]>>(`/product/${id}`);
+    const res = await damdexPublicAPI.get<DataResponse<Product>>(`/product/${id}`);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -86,9 +86,9 @@ export const fetchProductAdvantage = async (
   }
 };
 
-export const fetchProductAdvantagebyId = async (id: number): Promise<DataResponse<ProductAdvantage[]>> => {
+export const fetchProductAdvantagebyId = async (id: number): Promise<DataResponse<ProductAdvantage>> => {
   try {
-    const res = await damdexPublicAPI.get<DataResponse<ProductAdvantage[]>>(`/product/product-advantage/${id}`);
+    const res = await damdexPublicAPI.get<DataResponse<ProductAdvantage>>(`/product/product-advantage/${id}`);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

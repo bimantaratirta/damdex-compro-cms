@@ -16,9 +16,9 @@ export const fetchProject = async (params: PaginationParams): Promise<PaginatedD
   }
 };
 
-export const fetchProjectbyId = async (id: number): Promise<DataResponse<Project[]>> => {
+export const fetchProjectbyId = async (id: number): Promise<DataResponse<Project>> => {
   try {
-    const res = await damdexPublicAPI.get<DataResponse<Project[]>>(`/project/${id}`);
+    const res = await damdexPublicAPI.get<DataResponse<Project>>(`/project/${id}`);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

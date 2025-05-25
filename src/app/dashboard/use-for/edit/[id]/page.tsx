@@ -13,6 +13,7 @@ import { TextEditor } from "@/components/textEditor";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { patchUseFor } from "@/repositories/useFor";
 import { useUsageCompositionOptions } from "@/swr-hooks/usageComposition/useUsageCompositionOptions";
+import { useUsageForDetail } from "@/swr-hooks/usageFor/useUsageForDetail";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Kegunaan Komposisi Bahasa Indonesia harus diisi" }),
@@ -24,16 +25,18 @@ const formSchema = z.object({
 
 const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const { id } = React.use(params);
-  const { data } = useUsageCompositionOptions();
+  const { data, loading } = useUsageCompositionOptions();
+  const { data: compositionUsage, loading: compositionUsageLoading, mutate } = useUsageForDetail(id);
   const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: "",
-      descriptionIDN: "",
-      titleENG: "",
-      descriptionENG: "",
-      useCompositionId: "",
+      titleIDN: compositionUsage?.data.titleIDN,
+      descriptionIDN: compositionUsage?.data.descriptionIDN,
+      titleENG: compositionUsage?.data.titleENG,
+      descriptionENG: compositionUsage?.data.descriptionENG,
+      useCompositionId: compositionUsage?.data.useCompositionid.toString(),
     },
   });
 
@@ -49,50 +52,64 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       toast.success("Kegunaan Komposisi berhasil diubah", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
+      await mutate();
       setInterval(() => router.push("/dashboard/use-for"), 3000);
     } catch (error) {
       errorHandling(error, "Kegunaan Komposisi Gagal diubah");
     }
   };
 
+  React.useEffect(() => {
+    form.reset({
+      titleIDN: compositionUsage?.data.titleIDN,
+      descriptionIDN: compositionUsage?.data.descriptionIDN,
+      titleENG: compositionUsage?.data.titleENG,
+      descriptionENG: compositionUsage?.data.descriptionENG,
+      useCompositionId: compositionUsage?.data.useCompositionid.toString(),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, compositionUsageLoading]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name={"useCompositionId"}
-          render={({ field }) => (
-            <FormItem className={"flex flex-col"}>
-              <FormLabel>ID komposisi</FormLabel>
-              <FormControl>
-                <Select
-                  defaultValue={field.value.toString()}
-                  onValueChange={(value) => field.onChange(value)}
-                  {...field}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="ID komposisi" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {data?.data.map((val, idx) => (
-                        <SelectItem
-                          key={idx}
-                          value={val.id.toString()}
-                        >
-                          {val.titleIDN}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <div className="flex flex-col space-y-4 my-2">
-          <p>Ubah Kegunaan Komposisi</p>
+          <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+            Ubah Kegunaan Komposisi
+          </p>
+          <FormField
+            control={form.control}
+            name={"useCompositionId"}
+            render={({ field }) => (
+              <FormItem className={"flex flex-col"}>
+                <FormLabel>ID komposisi</FormLabel>
+                <FormControl>
+                  <Select
+                    defaultValue={field.value.toString()}
+                    onValueChange={(value) => field.onChange(value)}
+                    {...field}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="ID komposisi" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {data?.data.map((val, idx) => (
+                          <SelectItem
+                            key={idx}
+                            value={val.id.toString()}
+                          >
+                            {val.titleIDN}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <InputField
             formControl={form.control}
             name="titleIDN"
