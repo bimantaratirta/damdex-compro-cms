@@ -70,7 +70,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       firstDescriptionENG: data?.data.firstDescriptionENG,
       secondDescriptionENG: data?.data.secondDescriptionENG,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (

@@ -16,7 +16,6 @@ export const productAdvantageParamsSwrKey = (query?: PaginationQuery) => {
 };
 
 export const useProductAdvantage = (query?: PaginationQuery) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, mutate, error } = useSWR(productAdvantageParamsSwrKey(query), ([path, params]) =>
     fetchProductAdvantage(params as PaginationParams)
   );

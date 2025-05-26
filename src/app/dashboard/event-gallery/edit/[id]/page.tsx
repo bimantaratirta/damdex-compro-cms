@@ -85,7 +85,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       eventThemeENG: data?.data.eventThemeENG,
       eventDate: data && data.data.eventDate ? new Date(data.data.eventDate) : new Date(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (

@@ -64,7 +64,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       contentENG: data?.data.contentENG,
       titleImage: new File([], ""),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (

@@ -63,7 +63,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       descriptionENG: data?.data.descriptionENG,
       heroImage: new File([], ""),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (
