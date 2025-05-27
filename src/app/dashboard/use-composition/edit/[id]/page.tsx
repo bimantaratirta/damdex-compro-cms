@@ -65,7 +65,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       descriptionENG: composition?.data.descriptionENG,
       useId: composition?.data.useid.toString(),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, compositionLoading]);
 
   return (

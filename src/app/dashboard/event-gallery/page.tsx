@@ -51,7 +51,7 @@ const Page = () => {
         },
       },
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     []
   );
 
@@ -60,6 +60,7 @@ const Page = () => {
     page: pagination.pageIndex,
     limit: pagination.pageSize,
   });
+
   const defaultData = React.useMemo(() => data?.data.payload ?? [], [data]);
   const handleDelete = async (id: number) => {
     try {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react";
 import { Suspense, useCallback, useEffect, useRef, useState, JSX } from "react";
 
@@ -104,6 +103,7 @@ function BrokenImage(): JSX.Element {
         opacity: 0.2,
         width: 200,
       }}
+      alt="broken-image"
       draggable="false"
     />
   );

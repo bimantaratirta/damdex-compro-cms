@@ -72,7 +72,6 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       descriptionENG: advantage?.data.descriptionENG,
       heroImage: new File([], ""),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [advantageLoading, productLoading]);
 
   return (

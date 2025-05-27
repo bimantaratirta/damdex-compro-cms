@@ -108,6 +108,7 @@ function BrokenImage(): JSX.Element {
         width: 200,
       }}
       draggable="false"
+      alt="broken-image"
     />
   );
 }

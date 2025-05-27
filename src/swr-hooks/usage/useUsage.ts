@@ -16,7 +16,6 @@ export const usageParamsSwrKey = (query?: PaginationQuery) => {
 };
 
 export const useUsage = (query?: PaginationQuery) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data, mutate, error } = useSWR(usageParamsSwrKey(query), ([path, params]) =>
     fetchUse(params as PaginationParams)
   );
