@@ -32,12 +32,12 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: data?.data.titleIDN,
-      firstDescriptionIDN: data?.data.firstDescriptionIDN,
-      secondDescriptionIDN: data?.data.secondDescriptionIDN,
-      titleENG: data?.data.titleENG,
-      firstDescriptionENG: data?.data.firstDescriptionENG,
-      secondDescriptionENG: data?.data.secondDescriptionENG,
+      titleIDN: "",
+      firstDescriptionIDN: "",
+      secondDescriptionIDN: "",
+      titleENG: "",
+      firstDescriptionENG: "",
+      secondDescriptionENG: "",
       heroImage: new File([], ""),
     },
   });
@@ -55,7 +55,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       await patchProject(id, formdata);
       toast.success("Projek berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
-      setInterval(() => router.push("/dashboard/project"), 3000);
+      router.push("/dashboard/project");
     } catch (error) {
       errorHandling(error, "Projek Gagal Dibuat");
     }
@@ -63,14 +63,16 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      titleIDN: data?.data.titleIDN,
-      firstDescriptionIDN: data?.data.firstDescriptionIDN,
-      secondDescriptionIDN: data?.data.secondDescriptionIDN,
-      titleENG: data?.data.titleENG,
-      firstDescriptionENG: data?.data.firstDescriptionENG,
-      secondDescriptionENG: data?.data.secondDescriptionENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      firstDescriptionIDN: data?.data.firstDescriptionIDN ?? "",
+      secondDescriptionIDN: data?.data.secondDescriptionIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      firstDescriptionENG: data?.data.firstDescriptionENG ?? "",
+      secondDescriptionENG: data?.data.secondDescriptionENG ?? "",
     });
   }, [loading]);
+
+  if (loading) return <p>Loading</p>;
 
   return (
     <Form {...form}>
@@ -87,6 +89,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Judul Projek Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.firstDescriptionIDN}
             formControl={form.control}
             name="firstDescriptionIDN"
             placeholder="Konten Pertama Projek Bahasa Indonesia"
@@ -106,16 +109,17 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Judul Projek Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.firstDescriptionENG}
             formControl={form.control}
             name="firstDescriptionENG"
-            placeholder="Konten Pertama Projek Bahasa Indonesia"
-            label="Konten Pertama Projek Bahasa Indonesia"
+            placeholder="Konten Pertama Projek Bahasa Inggris"
+            label="Konten Pertama Projek Bahasa Inggris"
           />
           <TextEditor
             formControl={form.control}
             name="secondDescriptionENG"
-            placeholder="Konten Kedua Projek Bahasa Indonesia"
-            label="Konten Kedua Projek Bahasa Indonesia"
+            placeholder="Konten Kedua Projek Bahasa Inggris"
+            label="Konten Kedua Projek Bahasa Inggris"
           />
           <InputFile
             name="heroImage"

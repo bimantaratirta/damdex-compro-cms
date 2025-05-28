@@ -32,11 +32,12 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: compositionUsage?.data.titleIDN,
-      descriptionIDN: compositionUsage?.data.descriptionIDN,
-      titleENG: compositionUsage?.data.titleENG,
-      descriptionENG: compositionUsage?.data.descriptionENG,
-      useCompositionId: compositionUsage?.data.useCompositionid.toString(),
+      titleIDN: compositionUsage?.data.titleIDN ?? "",
+      descriptionIDN: compositionUsage?.data.descriptionIDN ?? "",
+      titleENG: compositionUsage?.data.titleENG ?? "",
+      descriptionENG: compositionUsage?.data.descriptionENG ?? "",
+      useCompositionId:
+        compositionUsage?.data.useCompositionid === undefined ? "" : compositionUsage?.data.useCompositionid.toString(),
     },
   });
 
@@ -53,7 +54,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
       await mutate();
-      setInterval(() => router.push("/dashboard/use-for"), 3000);
+      router.push("/dashboard/use-for");
     } catch (error) {
       errorHandling(error, "Kegunaan Komposisi Gagal diubah");
     }
@@ -61,13 +62,16 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      titleIDN: compositionUsage?.data.titleIDN,
-      descriptionIDN: compositionUsage?.data.descriptionIDN,
-      titleENG: compositionUsage?.data.titleENG,
-      descriptionENG: compositionUsage?.data.descriptionENG,
-      useCompositionId: compositionUsage?.data.useCompositionid.toString(),
+      titleIDN: compositionUsage?.data.titleIDN ?? "",
+      descriptionIDN: compositionUsage?.data.descriptionIDN ?? "",
+      titleENG: compositionUsage?.data.titleENG ?? "",
+      descriptionENG: compositionUsage?.data.descriptionENG ?? "",
+      useCompositionId:
+        compositionUsage?.data.useCompositionid === undefined ? "" : compositionUsage?.data.useCompositionid.toString(),
     });
   }, [loading, compositionUsageLoading]);
+
+  if (loading && compositionUsageLoading) return <p>loading</p>;
 
   return (
     <Form {...form}>

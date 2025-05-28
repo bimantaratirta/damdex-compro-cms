@@ -34,11 +34,11 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      productId: advantage?.data.productid.toString(),
-      titleIDN: advantage?.data.titleIDN,
-      descriptionIDN: advantage?.data.descriptionIDN,
-      titleENG: advantage?.data.titleENG,
-      descriptionENG: advantage?.data.descriptionENG,
+      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      titleIDN: advantage?.data.titleIDN ?? "",
+      descriptionIDN: advantage?.data.descriptionIDN ?? "",
+      titleENG: advantage?.data.titleENG ?? "",
+      descriptionENG: advantage?.data.descriptionENG ?? "",
       heroImage: new File([], ""),
     },
   });
@@ -57,7 +57,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
       await mutate();
-      setInterval(() => router.push("/dashboard/product-advantage"), 3000);
+      router.push("/dashboard/product-advantage");
     } catch (error) {
       errorHandling(error, "Kelebihan Produk Gagal diubah");
     }
@@ -65,11 +65,11 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      productId: advantage?.data.productid.toString(),
-      titleIDN: advantage?.data.titleIDN,
-      descriptionIDN: advantage?.data.descriptionIDN,
-      titleENG: advantage?.data.titleENG,
-      descriptionENG: advantage?.data.descriptionENG,
+      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      titleIDN: advantage?.data.titleIDN ?? "",
+      descriptionIDN: advantage?.data.descriptionIDN ?? "",
+      titleENG: advantage?.data.titleENG ?? "",
+      descriptionENG: advantage?.data.descriptionENG ?? "",
       heroImage: new File([], ""),
     });
   }, [advantageLoading, productLoading]);

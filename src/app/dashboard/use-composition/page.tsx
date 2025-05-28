@@ -9,12 +9,14 @@ import { Button } from "@/components/ui/button";
 import { UseComposition } from "@/lib/types/use";
 import { useUsageCompositionOptions } from "@/swr-hooks/usageComposition/useUsageCompositionOptions";
 import { ContentCard } from "@/components/contentCard";
+import { useUsage } from "@/swr-hooks/usage/useUsage";
 
 const Page = () => {
   const router = useRouter();
   const [openDelete, setOpenDelete] = React.useState<undefined | UseComposition>(undefined);
 
   const { data, mutate, loading } = useUsageCompositionOptions();
+  const { data: dataUse, loading: loadingUse } = useUsage();
 
   const handleDelete = async (id: number) => {
     try {
@@ -45,7 +47,6 @@ const Page = () => {
               <ContentCard
                 key={idx}
                 title={item.titleIDN}
-                description={item.descriptionIDN}
                 withActions
                 onEditClick={() => router.push(`/dashboard/use-composition/edit/${item.id}`)}
                 onDeleteClick={() => setOpenDelete(item)}

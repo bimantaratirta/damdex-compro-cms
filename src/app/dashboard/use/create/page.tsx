@@ -41,7 +41,7 @@ const Page = () => {
     try {
       await postUse(formdata);
       toast.success("Kegunaan berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/dashboard/use"), 3000);
+      router.push("/dashboard/use");
     } catch (error) {
       errorHandling(error, "Kegunaan Gagal dibuat");
     }

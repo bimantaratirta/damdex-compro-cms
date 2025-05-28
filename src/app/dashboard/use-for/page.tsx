@@ -42,15 +42,16 @@ const Page = () => {
         data.data.map((item, idx) => {
           return (
             <div key={idx}>
-              <p>{item.titleIDN}</p>
-              <div className="grid grid-flow-row grid-cols-4 gap-2">
+              <p className="mb-5 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
+                {item.titleIDN}
+              </p>
+              <div className="grid grid-flow-row grid-cols-4 gap-2 mb-5">
                 {item.useCompositionUseFor &&
                   item.useCompositionUseFor.length !== 0 &&
                   item.useCompositionUseFor.map((i, idx) => (
                     <ContentCard
                       key={idx}
                       title={i.titleIDN}
-                      description={i.descriptionIDN}
                       withActions
                       onEditClick={() => router.push(`/dashboard/use-for/edit/${i.id}`)}
                       onDeleteClick={() => setOpenDelete(i)}

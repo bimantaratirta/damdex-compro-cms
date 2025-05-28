@@ -59,7 +59,7 @@ const Page = () => {
       toast.success("Kelebihan Produk berhasil diubah", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
-      setInterval(() => router.push("/dashboard/product-advantage"), 3000);
+      router.push("/dashboard/product-advantage");
     } catch (error) {
       errorHandling(error, "Kelebihan Produk Gagal diubah");
     }

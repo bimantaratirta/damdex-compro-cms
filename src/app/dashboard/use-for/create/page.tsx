@@ -48,7 +48,7 @@ const Page = () => {
       toast.success("Kegunaan Komposisi berhasil dibuat", {
         description: "Anda akan segera dikembalikan ke halaman utama.",
       });
-      setInterval(() => router.push("/dashboard/use-for"), 3000);
+      router.push("/dashboard/use-for");
     } catch (error) {
       errorHandling(error, "Kegunaan Komposisi Gagal dibuat");
     }

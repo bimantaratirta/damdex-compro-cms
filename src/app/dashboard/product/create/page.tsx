@@ -15,9 +15,9 @@ import { postProduct } from "@/repositories/product";
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Produk Bahasa Indonesia harus diisi" }),
-  contentIDN: z.string().min(1, { message: "Konten Produk Bahasa Indonesia harus diisi" }),
+  descriptionIDN: z.string().min(1, { message: "Konten Produk Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Produk Bahasa Inggris harus diisi" }),
-  contentENG: z.string().min(1, { message: "Konten Produk Bahasa Inggris harus diisi" }),
+  descriptionENG: z.string().min(1, { message: "Konten Produk Bahasa Inggris harus diisi" }),
   heroImage: z.instanceof(File),
 });
 
@@ -27,9 +27,9 @@ const Page = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       titleIDN: "",
-      contentIDN: "",
+      descriptionIDN: "",
       titleENG: "",
-      contentENG: "",
+      descriptionENG: "",
       heroImage: new File([], ""),
     },
   });
@@ -41,16 +41,16 @@ const Page = () => {
       return;
     }
     formdata.append("titleIDN", values.titleIDN);
-    formdata.append("contentIDN", values.contentIDN);
+    formdata.append("descriptionIDN", values.descriptionIDN);
     formdata.append("titleENG", values.titleENG);
-    formdata.append("contentENG", values.contentENG);
+    formdata.append("descriptionENG", values.descriptionENG);
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);
     try {
       await postProduct(formdata);
-      toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/dashboard/product"), 3000);
+      toast.success("Produk berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
+      router.push("/dashboard/product");
     } catch (error) {
-      errorHandling(error, "Produk Gagal diubah");
+      errorHandling(error, "Produk Gagal dibuat");
     }
   };
 
@@ -70,7 +70,7 @@ const Page = () => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentIDN"
+            name="descriptionIDN"
             placeholder="Konten Produk Bahasa Indonesia"
             label="Konten Produk Bahasa Indonesia"
           />
@@ -83,7 +83,7 @@ const Page = () => {
           />
           <TextEditor
             formControl={form.control}
-            name="contentENG"
+            name="descriptionENG"
             placeholder="Konten Produk Bahasa Inggris"
             label="Konten Produk Bahasa Inggris"
           />
@@ -96,7 +96,7 @@ const Page = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Produk</Button>
+          <Button>Buat Produk</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();
