@@ -32,7 +32,7 @@ export default function Home() {
     try {
       await login({ email: values.email, password: hasher(values.password) });
       toast.success("Login Berhasil", { description: "Anda akan segera diarahkan ke halaman utama." });
-      setInterval(() => window.location.reload(), 1500);
+      window.location.reload();
     } catch (error) {
       errorHandling(error, "Login gagal");
     }

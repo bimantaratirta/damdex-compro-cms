@@ -121,7 +121,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
       control={formControl}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="z-[1]">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="w-full overflow-hidden rounded-lg border bg-background shadow z-[1]">

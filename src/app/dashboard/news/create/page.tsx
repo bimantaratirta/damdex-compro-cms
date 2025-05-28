@@ -49,7 +49,7 @@ const Page = () => {
     try {
       await postNews(formdata);
       toast.success("Berita berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/dashboard/news"), 3000);
+      router.push("/dashboard/news");
     } catch (error) {
       errorHandling(error, "Berita Gagal Dibuat");
     }

@@ -121,7 +121,7 @@ const Page = () => {
       toast.success("Data homepage berhasil ditambahkan.", {
         description: "Anda akan segera diarahkan ke halaman utama",
       });
-      setInterval(() => router.push("/dashboard/homepage"), 3000);
+      router.push("/dashboard/homepage");
     } catch (error) {
       errorHandling(error, "Data homepage gagal ditambahkan.");
     }

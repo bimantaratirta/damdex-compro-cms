@@ -36,14 +36,14 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: data?.data.titleIDN,
-      eventDescriptionIDN: data?.data.eventDescriptionIDN,
-      eventVenueIDN: data?.data.eventVenueIDN,
-      eventThemeIDN: data?.data.eventThemeIDN,
-      titleENG: data?.data.titleENG,
-      eventDescriptionENG: data?.data.eventDescriptionENG,
-      eventVenueENG: data?.data.eventVenueENG,
-      eventThemeENG: data?.data.eventThemeENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      eventDescriptionIDN: data?.data.eventDescriptionIDN ?? "",
+      eventVenueIDN: data?.data.eventVenueIDN ?? "",
+      eventThemeIDN: data?.data.eventThemeIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      eventDescriptionENG: data?.data.eventDescriptionENG ?? "",
+      eventVenueENG: data?.data.eventVenueENG ?? "",
+      eventThemeENG: data?.data.eventThemeENG ?? "",
       heroImage: new File([], ""),
       eventDate: data && data.data.eventDate ? new Date(data.data.eventDate) : new Date(),
     },
@@ -65,7 +65,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       await patchEventGallery(id, formdata);
       toast.success("Event berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
-      setInterval(() => router.push("/dashboard/event-gallery"), 3000);
+      router.push("/dashboard/event-gallery");
     } catch (error) {
       errorHandling(error, "Event gagal diubah");
     }
@@ -75,14 +75,14 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     reset({
-      titleIDN: data?.data.titleIDN,
-      eventDescriptionIDN: data?.data.eventDescriptionIDN,
-      eventVenueIDN: data?.data.eventVenueIDN,
-      eventThemeIDN: data?.data.eventThemeIDN,
-      titleENG: data?.data.titleENG,
-      eventDescriptionENG: data?.data.eventDescriptionENG,
-      eventVenueENG: data?.data.eventVenueENG,
-      eventThemeENG: data?.data.eventThemeENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      eventDescriptionIDN: data?.data.eventDescriptionIDN ?? "",
+      eventVenueIDN: data?.data.eventVenueIDN ?? "",
+      eventThemeIDN: data?.data.eventThemeIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      eventDescriptionENG: data?.data.eventDescriptionENG ?? "",
+      eventVenueENG: data?.data.eventVenueENG ?? "",
+      eventThemeENG: data?.data.eventThemeENG ?? "",
       eventDate: data && data.data.eventDate ? new Date(data.data.eventDate) : new Date(),
     });
   }, [loading]);

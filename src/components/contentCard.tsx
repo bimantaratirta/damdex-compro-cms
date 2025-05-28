@@ -14,7 +14,7 @@ export const ContentCard = ({
 }: {
   title: string;
   attendeesLimit?: number;
-  description: string;
+  description?: string;
   withActions?: boolean;
   onEditClick?: () => void;
   onDeleteClick?: () => void;
@@ -26,10 +26,11 @@ export const ContentCard = ({
         <HoverTip content={title}>
           <p className="truncate text-xl font-semibold text-black">{title}</p>
         </HoverTip>
-        <div
+        <p className="line-clamp-2 text-left text-base text-[#787370]">{description}</p>
+        {/* <div
           className="line-clamp-2 text-left text-base text-[#787370]"
           dangerouslySetInnerHTML={{ __html: description }}
-        />
+        /> */}
       </CardContent>
       <CardFooter className="flex flex-row justify-between">
         {withActions && (

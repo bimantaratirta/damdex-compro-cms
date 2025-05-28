@@ -30,10 +30,10 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: data?.data.titleIDN,
-      contentIDN: data?.data.contentIDN,
-      titleENG: data?.data.titleENG,
-      contentENG: data?.data.contentENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      contentIDN: data?.data.contentIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      contentENG: data?.data.contentENG ?? "",
       titleImage: new File([], ""),
     },
   });
@@ -50,7 +50,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       await patchNews(id, formdata);
       toast.success("Berita berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
-      setInterval(() => router.push("/dashboard/news"), 3000);
+      router.push("/dashboard/news");
     } catch (error) {
       errorHandling(error, "Berita Gagal diubah");
     }
@@ -58,13 +58,15 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      titleIDN: data?.data.titleIDN,
-      contentIDN: data?.data.contentIDN,
-      titleENG: data?.data.titleENG,
-      contentENG: data?.data.contentENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      contentIDN: data?.data.contentIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      contentENG: data?.data.contentENG ?? "",
       titleImage: new File([], ""),
     });
   }, [loading]);
+
+  if (loading) return <p>loading</p>;
 
   return (
     <Form {...form}>
@@ -81,6 +83,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Judul Berita Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.contentIDN}
             formControl={form.control}
             name="contentIDN"
             placeholder="Konten Berita Bahasa Indonesia"
@@ -94,6 +97,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Judul Berita Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.contentENG}
             formControl={form.control}
             name="contentENG"
             placeholder="Konten Berita Bahasa Inggris"

@@ -27,8 +27,8 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: data?.data.titleIDN,
-      titleENG: data?.data.titleENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
       heroImage: new File([], ""),
     },
   });
@@ -42,7 +42,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       await patchUse(id, formdata);
       toast.success("Kegunaan berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
-      setInterval(() => router.push("/dashboard/use"), 3000);
+      router.push("/dashboard/use");
     } catch (error) {
       errorHandling(error, "Kegunaan Gagal diubah");
     }
@@ -50,8 +50,8 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      titleIDN: data?.data.titleIDN,
-      titleENG: data?.data.titleENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
       heroImage: new File([], ""),
     });
   }, [loading]);

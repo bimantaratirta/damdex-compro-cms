@@ -30,10 +30,10 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      titleIDN: data?.data.titleIDN,
-      descriptionIDN: data?.data.descriptionIDN,
-      titleENG: data?.data.titleENG,
-      descriptionENG: data?.data.descriptionENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      descriptionIDN: data?.data.descriptionIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      descriptionENG: data?.data.descriptionENG ?? "",
       heroImage: new File([], ""),
     },
   });
@@ -49,7 +49,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       await patchProduct(id, formdata);
       toast.success("Produk berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
-      setInterval(() => router.push("/dashboard/product"), 3000);
+      router.push("/dashboard/product");
     } catch (error) {
       errorHandling(error, "Produk Gagal diubah");
     }
@@ -57,10 +57,10 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      titleIDN: data?.data.titleIDN,
-      descriptionIDN: data?.data.descriptionIDN,
-      titleENG: data?.data.titleENG,
-      descriptionENG: data?.data.descriptionENG,
+      titleIDN: data?.data.titleIDN ?? "",
+      descriptionIDN: data?.data.descriptionIDN ?? "",
+      titleENG: data?.data.titleENG ?? "",
+      descriptionENG: data?.data.descriptionENG ?? "",
       heroImage: new File([], ""),
     });
   }, [loading]);

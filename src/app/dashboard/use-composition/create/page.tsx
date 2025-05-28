@@ -46,7 +46,7 @@ const Page = () => {
         descriptionIDN: values.descriptionIDN,
       });
       toast.success("Komposisi berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
-      setInterval(() => router.push("/dashboard/use-composition"), 3000);
+      router.push("/dashboard/use-composition");
     } catch (error) {
       errorHandling(error, "Komposisi Gagal dibuat");
     }
