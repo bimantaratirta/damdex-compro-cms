@@ -96,6 +96,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Konten Pertama Projek Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.secondDescriptionIDN}
             formControl={form.control}
             name="secondDescriptionIDN"
             placeholder="Konten Kedua Projek Bahasa Indonesia"
@@ -116,6 +117,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Konten Pertama Projek Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.secondDescriptionENG}
             formControl={form.control}
             name="secondDescriptionENG"
             placeholder="Konten Kedua Projek Bahasa Inggris"

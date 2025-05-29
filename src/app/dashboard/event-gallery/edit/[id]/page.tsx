@@ -116,6 +116,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Tema Event Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.eventDescriptionIDN}
             formControl={form.control}
             name="eventDescriptionIDN"
             placeholder="Deskripsi Event Bahasa Indonesia"
@@ -143,6 +144,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Tema Event Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.eventDescriptionENG}
             formControl={form.control}
             name="eventDescriptionENG"
             placeholder="Deskripsi Event Bahasa Inggris"

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { ListNode, ListItemNode } from "@lexical/list";
 import { ParagraphNode, TextNode, $getRoot, LexicalEditor } from "lexical";
@@ -25,7 +24,6 @@ import { FormatQuote } from "@/components/editor/plugins/toolbar/block-format/fo
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { FontFamilyToolbarPlugin } from "./editor/plugins/toolbar/font-family-toolbar-plugin";
-import { FontSizeToolbarPlugin } from "./editor/plugins/toolbar/font-size-toolbar-plugin";
 import { FontFormatToolbarPlugin } from "./editor/plugins/toolbar/font-format-toolbar-plugin";
 import { SubSuperToolbarPlugin } from "./editor/plugins/toolbar/subsuper-toolbar-plugin";
 import { ElementFormatToolbarPlugin } from "./editor/plugins/toolbar/element-format-toolbar-plugin";
@@ -145,7 +143,6 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                             <FormatQuote />
                           </BlockFormatDropDown>
                           <FontFamilyToolbarPlugin />
-                          {/* <FontSizeToolbarPlugin /> */}
                           <FontFormatToolbarPlugin format="bold" />
                           <FontFormatToolbarPlugin format="italic" />
                           <FontFormatToolbarPlugin format="underline" />

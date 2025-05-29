@@ -107,6 +107,8 @@ const Page = () => {
             Kembali
           </Button>
         </div>
+        <div></div>
+        {form.control._defaultValues.contentENG}
       </form>
     </Form>
   );

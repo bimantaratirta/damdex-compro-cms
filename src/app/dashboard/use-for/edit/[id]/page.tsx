@@ -121,6 +121,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kegunaan Komposisi Bahasa Indonesia"
           />
           <TextEditor
+            value={compositionUsage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionIDN"
             placeholder="Konten Kegunaan Komposisi Bahasa Indonesia"
@@ -134,6 +135,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kegunaan Komposisi Bahasa Inggris"
           />
           <TextEditor
+            value={compositionUsage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionENG"
             placeholder="Konten Kegunaan Komposisi Bahasa Inggris"

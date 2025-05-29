@@ -122,6 +122,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kelebihan Produk Bahasa Indonesia"
           />
           <TextEditor
+            value={advantage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionIDN"
             placeholder="Konten Kelebihan Produk Bahasa Indonesia"
@@ -135,6 +136,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kelebihan Produk Bahasa Inggris"
           />
           <TextEditor
+            value={advantage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionENG"
             placeholder="Konten Kelebihan Produk Bahasa Inggris"
