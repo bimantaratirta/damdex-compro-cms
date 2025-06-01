@@ -18,6 +18,7 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { BlockFormatDropDown } from "./editor/plugins/toolbar/block-format-toolbar-plugin";
 import { FormatParagraph } from "@/components/editor/plugins/toolbar/block-format/format-paragraph";
 import { FormatHeading } from "@/components/editor/plugins/toolbar/block-format/format-heading";
+import { FormatBulletedList } from "./editor/plugins/toolbar/block-format/format-bulleted-list";
 import { FormatNumberedList } from "@/components/editor/plugins/toolbar/block-format/format-numbered-list";
 import { FormatCheckList } from "@/components/editor/plugins/toolbar/block-format/format-check-list";
 import { FormatQuote } from "@/components/editor/plugins/toolbar/block-format/format-quote";
@@ -138,6 +139,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                           <BlockFormatDropDown>
                             <FormatParagraph />
                             <FormatHeading levels={["h1", "h2", "h3"]} />
+                            <FormatBulletedList />
                             <FormatNumberedList />
                             <FormatCheckList />
                             <FormatQuote />
@@ -149,10 +151,10 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                           <FontFormatToolbarPlugin format="strikethrough" />
                           <SubSuperToolbarPlugin />
                           <ElementFormatToolbarPlugin />
-                          <BlockInsertPlugin>
+                          {/* <BlockInsertPlugin>
                             <InsertImage />
                             <InsertInlineImage />
-                          </BlockInsertPlugin>
+                          </BlockInsertPlugin> */}
                         </div>
                       )}
                     </ToolbarPlugin>
@@ -181,6 +183,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                       <HtmlPlugin onHtmlChanged={(html) => field.onChange(html)} />
                       {/* rest of the plugins */}
                     </div>
+                    {field.value}
                   </div>
                 </TooltipProvider>
               </LexicalComposer>

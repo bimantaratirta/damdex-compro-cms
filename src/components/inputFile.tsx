@@ -14,7 +14,16 @@ type InputFileProps = {
   sizeLimit?: number;
 };
 
-export const InputFile: React.FC<InputFileProps> = ({ formControl, name, label, placeholder, description, className, acceptedFiles, sizeLimit = 5 * 1024 * 1024 }) => {
+export const InputFile: React.FC<InputFileProps> = ({
+  formControl,
+  name,
+  label,
+  placeholder,
+  description,
+  className,
+  acceptedFiles,
+  sizeLimit = 10 * 1024 * 1024,
+}) => {
   const [filename, setFilename] = React.useState<string>("");
   const [error, setError] = React.useState<boolean>(false);
   return (
@@ -43,7 +52,14 @@ export const InputFile: React.FC<InputFileProps> = ({ formControl, name, label, 
                   setError(false);
                 }}
               />
-              <div id={name} className="w-full rounded-lg bg-[#FAFAFA] p-2" onDrop={(ev) => ev.preventDefault()} onDragOver={(ev) => ev.preventDefault()} onDragStart={(ev) => ev.preventDefault()} onDragEnd={(ev) => ev.preventDefault()}>
+              <div
+                id={name}
+                className="w-full rounded-lg bg-[#FAFAFA] p-2"
+                onDrop={(ev) => ev.preventDefault()}
+                onDragOver={(ev) => ev.preventDefault()}
+                onDragStart={(ev) => ev.preventDefault()}
+                onDragEnd={(ev) => ev.preventDefault()}
+              >
                 <label htmlFor={name}>
                   <div className="flex w-full flex-col content-center items-center rounded-lg border border-dashed p-5 text-center hover:cursor-pointer hover:border-lime-500">
                     {filename !== "" && filename}
@@ -54,7 +70,9 @@ export const InputFile: React.FC<InputFileProps> = ({ formControl, name, label, 
             </div>
           </FormControl>
           <FormDescription className="pl-4 text-xs">{description}</FormDescription>
-          <FormMessage className="pl-4 text-xs">{error ? "Format file tidak sesuai / ukuran file terlalu besar." : null}</FormMessage>
+          <FormMessage className="pl-4 text-xs">
+            {error ? "Format file tidak sesuai / ukuran file terlalu besar." : null}
+          </FormMessage>
         </FormItem>
       )}
     />

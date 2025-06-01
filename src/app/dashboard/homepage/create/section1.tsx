@@ -9,10 +9,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { useRouter } from "next/navigation";
-// import { patchHome } from "@/repositories/home";
-// import { toast } from "sonner";
-// import { errorHandling } from "@/lib/utils";
-
+import { toast } from "sonner";
+import { postHome } from "@/repositories/home";
+import { errorHandling } from "@/lib/utils";
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
   { value: "eng", name: "Inggris" },
@@ -38,11 +37,24 @@ export const Section1 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (values.section1Background.name === "" || values.section1GifImage.name === "")
+      toast.error("Semua file gambar harus diupload.");
     const section1 = new FormData();
     section1.append("section1Background", values.section1Background);
     section1.append("section1GifImage", values.section1GifImage);
     section1.append("section1Description", values.section1Description);
     section1.append("sectionNumber", "1");
+    section1.append("language", values.language);
+
+    try {
+      await postHome(section1);
+      toast.success("Data homepage section 1 berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      router.push("/dashboard/homepage");
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
   };
 
   return (
@@ -110,7 +122,7 @@ export const Section1 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Section 1</Button>
+          <Button>Tambah Section 1</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

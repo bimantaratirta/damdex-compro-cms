@@ -67,7 +67,7 @@ export const AppSidebar = () => {
     <Sidebar>
       <SidebarHeader>
         <Image
-          alt="logo my istiqlal"
+          alt="logodamdex"
           src={logo}
           style={{ margin: "0 auto 0 auto" }}
           width={100}
