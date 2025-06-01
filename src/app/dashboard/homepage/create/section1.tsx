@@ -37,8 +37,13 @@ export const Section1 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (values.section1Background.name === "" || values.section1GifImage.name === "")
+    if (values.section1Background.name === "" || values.section1GifImage.name === "") {
       toast.error("Semua file gambar harus diupload.");
+      return;
+    }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const section1 = new FormData();
     section1.append("section1Background", values.section1Background);
     section1.append("section1GifImage", values.section1GifImage);
@@ -108,7 +113,7 @@ export const Section1 = () => {
           <InputFile
             name="section1GifImage"
             formControl={form.control}
-            label="Background Section 1"
+            label="GIF Section 1"
             className="w-full"
             description="File yang diterima dalam format gif dengan ukuran file tidak lebih dari 10MB."
             acceptedFiles=".gif"
@@ -122,7 +127,7 @@ export const Section1 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Tambah Section 1</Button>
+          <Button>Tambah / Ubah Section 1</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

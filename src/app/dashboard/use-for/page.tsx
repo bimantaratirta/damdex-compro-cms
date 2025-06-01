@@ -43,7 +43,7 @@ const Page = () => {
           return (
             <div key={idx}>
               <p className="mb-5 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
-                {item.titleIDN}
+                {`${item.titleIDN} - ${item.useId === 1 ? "Untuk Rumah Anda" : "Untuk Profesional"}`}
               </p>
               <div className="grid grid-flow-row grid-cols-4 gap-2 mb-5">
                 {item.useCompositionUseFor &&

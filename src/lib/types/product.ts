@@ -1,7 +1,7 @@
 import { Base } from "./response";
 
 export interface ProductAdvantage extends Base {
-  product: string;
+  product: Product;
   productid: number;
   heroImageUrl: string;
   heroImage: string;

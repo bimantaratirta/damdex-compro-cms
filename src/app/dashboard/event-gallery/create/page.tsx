@@ -46,7 +46,13 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (values.heroImage.name === "") toast.error("Gambar event belum ada.");
+    if (values.heroImage.name === "") {
+      toast.error("Gambar event belum ada.");
+      return;
+    }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const formdata = new FormData();
     formdata.append("eventDate", values.eventDate.toISOString());
     formdata.append("titleIDN", values.titleIDN);

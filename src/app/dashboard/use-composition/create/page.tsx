@@ -37,6 +37,9 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     try {
       await postUseComposition({
         useId: Number(values.useId),

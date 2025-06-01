@@ -44,6 +44,9 @@ const Page = () => {
       toast.error("Gambar Projek belum ada.");
       return;
     }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("firstDescriptionIDN", values.firstDescriptionIDN);
     formdata.append("secondDescriptionIDN", values.secondDescriptionIDN);

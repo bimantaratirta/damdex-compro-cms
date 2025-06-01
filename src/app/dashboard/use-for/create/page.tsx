@@ -37,6 +37,9 @@ const Page = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     try {
       await postUseFor({
         useCompositionId: Number(values.useCompositionId),
@@ -83,7 +86,7 @@ const Page = () => {
                             key={idx}
                             value={val.id.toString()}
                           >
-                            {val.titleIDN}
+                            {`${val.titleIDN} - ${val.useId === 1 ? "Untuk Rumah Anda" : "Untuk Profesional"}`}
                           </SelectItem>
                         ))}
                       </SelectGroup>

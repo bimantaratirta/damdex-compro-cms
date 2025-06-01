@@ -37,11 +37,14 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       titleENG: compositionUsage?.data.titleENG ?? "",
       descriptionENG: compositionUsage?.data.descriptionENG ?? "",
       useCompositionId:
-        compositionUsage?.data.useCompositionid === undefined ? "" : compositionUsage?.data.useCompositionid.toString(),
+        compositionUsage?.data.useCompositionId === undefined ? "" : compositionUsage?.data.useCompositionId.toString(),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     try {
       await patchUseFor(id, {
         useCompositionId: Number(values.useCompositionId),
@@ -67,7 +70,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       titleENG: compositionUsage?.data.titleENG ?? "",
       descriptionENG: compositionUsage?.data.descriptionENG ?? "",
       useCompositionId:
-        compositionUsage?.data.useCompositionid === undefined ? "" : compositionUsage?.data.useCompositionid.toString(),
+        compositionUsage?.data.useCompositionId === undefined ? "" : compositionUsage?.data.useCompositionId.toString(),
     });
   }, [loading, compositionUsageLoading]);
 
@@ -102,7 +105,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
                             key={idx}
                             value={val.id.toString()}
                           >
-                            {val.titleIDN}
+                            {`${val.titleIDN} - ${val.useId === 1 ? "Untuk Rumah Anda" : "Untuk Profesional"}`}
                           </SelectItem>
                         ))}
                       </SelectGroup>

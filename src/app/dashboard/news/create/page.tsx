@@ -40,6 +40,9 @@ const Page = () => {
       toast.error("Gambar berita belum ada.");
       return;
     }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("contentIDN", values.contentIDN);
     formdata.append("titleENG", values.titleENG);
