@@ -23,16 +23,16 @@ const formSchema = z.object({
   language: z.string().min(1, { message: "Bahasa harus diisi" }),
   section2TopLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2TopLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2TopLeftImage: z.instanceof(File),
+  section2TopLeftImageBackground: z.instanceof(File),
   section2TopRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2TopRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2TopRightImage: z.instanceof(File),
+  section2TopRightImageBackground: z.instanceof(File),
   section2BottomLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2BottomLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2BottomLeftImage: z.instanceof(File),
+  section2BottomLeftImageBackground: z.instanceof(File),
   section2BottomRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2BottomRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2BottomRightImage: z.instanceof(File),
+  section2BottomRightImageBackground: z.instanceof(File),
 });
 
 export const Section2 = () => {
@@ -44,39 +44,39 @@ export const Section2 = () => {
       language: "",
       section2TopLeftTitle: "",
       section2TopLeftDescription: "",
-      section2TopLeftImage: new File([], ""),
+      section2TopLeftImageBackground: new File([], ""),
       section2TopRightTitle: "",
       section2TopRightDescription: "",
-      section2TopRightImage: new File([], ""),
+      section2TopRightImageBackground: new File([], ""),
       section2BottomLeftTitle: "",
       section2BottomLeftDescription: "",
-      section2BottomLeftImage: new File([], ""),
+      section2BottomLeftImageBackground: new File([], ""),
       section2BottomRightTitle: "",
       section2BottomRightDescription: "",
-      section2BottomRightImage: new File([], ""),
+      section2BottomRightImageBackground: new File([], ""),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (
-      values.section2TopLeftImage.name === "" ||
-      values.section2TopRightImage.name === "" ||
-      values.section2BottomLeftImage.name === "" ||
-      values.section2BottomRightImage.name === ""
+      values.section2TopLeftImageBackground.name === "" ||
+      values.section2TopRightImageBackground.name === "" ||
+      values.section2BottomLeftImageBackground.name === "" ||
+      values.section2BottomRightImageBackground.name === ""
     )
       toast.error("Semua file gambar harus diupload.");
 
     const section2 = new FormData();
-    section2.append("section2TopLeftImage", values.section2TopLeftImage);
+    section2.append("section2TopLeftImageBackground", values.section2TopLeftImageBackground);
     section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
     section2.append("section2TopLeftDescription", values.section2TopLeftDescription);
-    section2.append("section2TopRightImage", values.section2TopRightImage);
+    section2.append("section2TopRightImageBackground", values.section2TopRightImageBackground);
     section2.append("section2TopRightTitle", values.section2TopRightTitle);
     section2.append("section2TopRightDescription", values.section2TopRightDescription);
-    section2.append("section2BottomLeftImage", values.section2BottomLeftImage);
+    section2.append("section2BottomLeftImageBackground", values.section2BottomLeftImageBackground);
     section2.append("section2BottomLeftTitle", values.section2BottomLeftTitle);
     section2.append("section2BottomLeftDescription", values.section2BottomLeftDescription);
-    section2.append("section2BottomRightImage", values.section2BottomRightImage);
+    section2.append("section2BottomRightImageBackground", values.section2BottomRightImageBackground);
     section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
     section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
     section2.append("sectionNumber", "2");
@@ -149,7 +149,7 @@ export const Section2 = () => {
             label="Description Top Left Section 2"
           />
           <InputFile
-            name="section2TopLeftImage"
+            name="section2TopLeftImageBackground"
             formControl={form.control}
             label="Gambar Top Left Section 2"
             className="w-full"
@@ -170,7 +170,7 @@ export const Section2 = () => {
             label="Description Top Right Section 2"
           />
           <InputFile
-            name="section2TopRightImage"
+            name="section2TopRightImageBackground"
             formControl={form.control}
             label="Gambar Top Right Section 2"
             className="w-full"
@@ -191,7 +191,7 @@ export const Section2 = () => {
             label="Description Bottom Left Section 2"
           />
           <InputFile
-            name="section2BottomLeftImage"
+            name="section2BottomLeftImageBackground"
             formControl={form.control}
             label="Gambar Bottom Left Section 2"
             className="w-full"
@@ -212,7 +212,7 @@ export const Section2 = () => {
             label="Description Bottom Right Section 2"
           />
           <InputFile
-            name="section2BottomRightImage"
+            name="section2BottomRightImageBackground"
             formControl={form.control}
             label="Gambar Bottom Right Section 2"
             className="w-full"
