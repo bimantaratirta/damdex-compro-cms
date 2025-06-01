@@ -96,6 +96,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Konten Pertama Projek Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.secondDescriptionIDN}
             formControl={form.control}
             name="secondDescriptionIDN"
             placeholder="Konten Kedua Projek Bahasa Indonesia"
@@ -116,6 +117,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Konten Pertama Projek Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.secondDescriptionENG}
             formControl={form.control}
             name="secondDescriptionENG"
             placeholder="Konten Kedua Projek Bahasa Inggris"
@@ -126,7 +128,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             formControl={form.control}
             label="Gambar Projek"
             className="w-full"
-            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
+            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

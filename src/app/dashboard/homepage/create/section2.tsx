@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { postHome } from "@/repositories/home";
+import { errorHandling } from "@/lib/utils";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -34,6 +37,7 @@ const formSchema = z.object({
 
 export const Section2 = () => {
   const router = useRouter();
+  //TODO: add data with useEffect
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,6 +58,14 @@ export const Section2 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (
+      values.section2TopLeftImage.name === "" ||
+      values.section2TopRightImage.name === "" ||
+      values.section2BottomLeftImage.name === "" ||
+      values.section2BottomRightImage.name === ""
+    )
+      toast.error("Semua file gambar harus diupload.");
+
     const section2 = new FormData();
     section2.append("section2TopLeftImage", values.section2TopLeftImage);
     section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
@@ -68,6 +80,17 @@ export const Section2 = () => {
     section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
     section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
     section2.append("sectionNumber", "2");
+    section2.append("language", values.language);
+
+    try {
+      await postHome(section2);
+      toast.success("Data homepage section 2 berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      router.push("/dashboard/homepage");
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
   };
 
   return (
@@ -197,7 +220,7 @@ export const Section2 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Section 2</Button>
+          <Button>Tambah Section 2</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

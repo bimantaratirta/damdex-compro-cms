@@ -116,6 +116,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Tema Event Bahasa Indonesia"
           />
           <TextEditor
+            value={data?.data.eventDescriptionIDN}
             formControl={form.control}
             name="eventDescriptionIDN"
             placeholder="Deskripsi Event Bahasa Indonesia"
@@ -143,6 +144,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Tema Event Bahasa Inggris"
           />
           <TextEditor
+            value={data?.data.eventDescriptionENG}
             formControl={form.control}
             name="eventDescriptionENG"
             placeholder="Deskripsi Event Bahasa Inggris"
@@ -160,7 +162,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             formControl={form.control}
             label="Gambar Event"
             className="w-full"
-            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
+            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

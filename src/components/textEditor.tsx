@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { ListNode, ListItemNode } from "@lexical/list";
 import { ParagraphNode, TextNode, $getRoot, LexicalEditor } from "lexical";
@@ -19,13 +18,13 @@ import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { BlockFormatDropDown } from "./editor/plugins/toolbar/block-format-toolbar-plugin";
 import { FormatParagraph } from "@/components/editor/plugins/toolbar/block-format/format-paragraph";
 import { FormatHeading } from "@/components/editor/plugins/toolbar/block-format/format-heading";
+import { FormatBulletedList } from "./editor/plugins/toolbar/block-format/format-bulleted-list";
 import { FormatNumberedList } from "@/components/editor/plugins/toolbar/block-format/format-numbered-list";
 import { FormatCheckList } from "@/components/editor/plugins/toolbar/block-format/format-check-list";
 import { FormatQuote } from "@/components/editor/plugins/toolbar/block-format/format-quote";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { FontFamilyToolbarPlugin } from "./editor/plugins/toolbar/font-family-toolbar-plugin";
-import { FontSizeToolbarPlugin } from "./editor/plugins/toolbar/font-size-toolbar-plugin";
 import { FontFormatToolbarPlugin } from "./editor/plugins/toolbar/font-format-toolbar-plugin";
 import { SubSuperToolbarPlugin } from "./editor/plugins/toolbar/subsuper-toolbar-plugin";
 import { ElementFormatToolbarPlugin } from "./editor/plugins/toolbar/element-format-toolbar-plugin";
@@ -140,22 +139,22 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                           <BlockFormatDropDown>
                             <FormatParagraph />
                             <FormatHeading levels={["h1", "h2", "h3"]} />
+                            <FormatBulletedList />
                             <FormatNumberedList />
                             <FormatCheckList />
                             <FormatQuote />
                           </BlockFormatDropDown>
                           <FontFamilyToolbarPlugin />
-                          {/* <FontSizeToolbarPlugin /> */}
                           <FontFormatToolbarPlugin format="bold" />
                           <FontFormatToolbarPlugin format="italic" />
                           <FontFormatToolbarPlugin format="underline" />
                           <FontFormatToolbarPlugin format="strikethrough" />
                           <SubSuperToolbarPlugin />
                           <ElementFormatToolbarPlugin />
-                          <BlockInsertPlugin>
+                          {/* <BlockInsertPlugin>
                             <InsertImage />
                             <InsertInlineImage />
-                          </BlockInsertPlugin>
+                          </BlockInsertPlugin> */}
                         </div>
                       )}
                     </ToolbarPlugin>
@@ -184,6 +183,7 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                       <HtmlPlugin onHtmlChanged={(html) => field.onChange(html)} />
                       {/* rest of the plugins */}
                     </div>
+                    {field.value}
                   </div>
                 </TooltipProvider>
               </LexicalComposer>

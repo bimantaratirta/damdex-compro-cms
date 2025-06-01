@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getUserToken } from "./utils";
+import { setCookie } from "typescript-cookie";
 
 export const damdexPublicAPI = axios.create({
   withCredentials: false,
@@ -30,8 +31,8 @@ export const damdexAPI = axios.create({
 damdexAPI.interceptors.response.use(null, async (error) => {
   const config = error.config;
   if (error && error.response.status === 401) {
-    // await reValidate();
-    // window.location.reload();
+    setCookie("status", "inactive");
+    window.location.reload();
     return axios(config);
   }
 });

@@ -122,6 +122,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kelebihan Produk Bahasa Indonesia"
           />
           <TextEditor
+            value={advantage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionIDN"
             placeholder="Konten Kelebihan Produk Bahasa Indonesia"
@@ -135,6 +136,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kelebihan Produk Bahasa Inggris"
           />
           <TextEditor
+            value={advantage?.data.descriptionIDN}
             formControl={form.control}
             name="descriptionENG"
             placeholder="Konten Kelebihan Produk Bahasa Inggris"
@@ -145,7 +147,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             formControl={form.control}
             label="Gambar Kelebihan Produk"
             className="w-full"
-            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 5MB."
+            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

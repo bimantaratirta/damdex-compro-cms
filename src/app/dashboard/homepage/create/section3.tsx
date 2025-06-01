@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { useRouter } from "next/navigation";
+import { postHome } from "@/repositories/home";
+import { toast } from "sonner";
+import { errorHandling } from "@/lib/utils";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -21,6 +24,7 @@ const formSchema = z.object({
   section3TopLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section3TopLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
   section3TopLeftImage: z.instanceof(File),
+  section3CenterTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section3BottomRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section3BottomRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
   section3BottomRightImage: z.instanceof(File),
@@ -35,6 +39,7 @@ export const Section3 = () => {
       section3TopLeftTitle: "",
       section3TopLeftDescription: "",
       section3TopLeftImage: new File([], ""),
+      section3CenterTitle: "",
       section3BottomRightTitle: "",
       section3BottomRightDescription: "",
       section3BottomRightImage: new File([], ""),
@@ -42,16 +47,30 @@ export const Section3 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (values.section3TopLeftImage.name === "" || values.section3BottomRightImage.name === "")
+      toast.error("Semua file gambar harus diupload.");
+
     const section3 = new FormData();
     section3.append("section3TopLeftImage", values.section3TopLeftImage);
     section3.append("section3TopLeftTitle", values.section3TopLeftTitle);
     section3.append("section3TopLeftDescription", values.section3TopLeftDescription);
+    section3.append("section3CenterTitle", values.section3CenterTitle);
     section3.append("section3BottomRightImage", values.section3BottomRightImage);
     section3.append("section3BottomRightTitle", values.section3BottomRightTitle);
     section3.append("section3BottomRightDescription", values.section3BottomRightDescription);
     section3.append("sectionNumber", "3");
-  };
+    section3.append("language", values.language);
 
+    try {
+      await postHome(section3);
+      toast.success("Data homepage berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      router.push("/dashboard/homepage");
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
+  };
   return (
     <Form {...form}>
       <form
@@ -113,6 +132,13 @@ export const Section3 = () => {
             label="Gambar Top Section 3"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+          />
+          <InputField
+            formControl={form.control}
+            name="section3CenterTitle"
+            placeholder="Center Title Section 3"
+            className="w-full"
+            label="Center Title Section 3"
           />
           <InputField
             formControl={form.control}
