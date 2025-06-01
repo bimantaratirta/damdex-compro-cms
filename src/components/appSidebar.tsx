@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Home, GalleryThumbnails, Newspaper, Folder } from "lucide-react";
+import { Home, GalleryThumbnails, Newspaper, Folder, Tag, Paintbrush } from "lucide-react";
 import Image from "next/image";
 import logo from "@/../public/damdexlogo.png";
 
@@ -37,27 +37,27 @@ const menuItems = [
   },
   {
     name: "Use",
-    icon: Folder,
+    icon: Paintbrush,
     url: "/dashboard/use",
   },
   {
     name: "Use Composition",
-    icon: Folder,
+    icon: Paintbrush,
     url: "/dashboard/use-composition",
   },
   {
     name: "Use for",
-    icon: Folder,
+    icon: Paintbrush,
     url: "/dashboard/use-for",
   },
   {
     name: "Product",
-    icon: Folder,
+    icon: Tag,
     url: "/dashboard/product",
   },
   {
     name: "Product Advantage",
-    icon: Folder,
+    icon: Tag,
     url: "/dashboard/product-advantage",
   },
 ];

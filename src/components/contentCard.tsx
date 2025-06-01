@@ -21,7 +21,7 @@ export const ContentCard = ({
   onDetailClick?: () => void;
 }) => {
   return (
-    <Card className={`w-full border-[#000] bg-[#EFF7CF]/40`}>
+    <Card className={`w-full border-[#000] bg-[#FFF]/40`}>
       <CardContent className="flex flex-col space-y-2">
         <HoverTip content={title}>
           <p className="truncate text-xl font-semibold text-black">{title}</p>

@@ -141,10 +141,10 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                             <FormatHeading levels={["h1", "h2", "h3"]} />
                             <FormatBulletedList />
                             <FormatNumberedList />
-                            <FormatCheckList />
-                            <FormatQuote />
+                            {/* <FormatCheckList /> */}
+                            {/* <FormatQuote /> */}
                           </BlockFormatDropDown>
-                          <FontFamilyToolbarPlugin />
+                          {/* <FontFamilyToolbarPlugin /> */}
                           <FontFormatToolbarPlugin format="bold" />
                           <FontFormatToolbarPlugin format="italic" />
                           <FontFormatToolbarPlugin format="underline" />
@@ -183,7 +183,6 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                       <HtmlPlugin onHtmlChanged={(html) => field.onChange(html)} />
                       {/* rest of the plugins */}
                     </div>
-                    {field.value}
                   </div>
                 </TooltipProvider>
               </LexicalComposer>
