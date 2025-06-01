@@ -9,7 +9,7 @@ export interface Use extends Base {
 
 export interface UseFor extends Base {
   useComposition: string;
-  useCompositionid: number;
+  useCompositionId: number;
   titleIDN: string;
   titleENG: string;
   descriptionIDN: string;
