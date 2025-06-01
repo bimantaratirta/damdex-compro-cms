@@ -20,10 +20,11 @@ const formSchema = z.object({
   language: z.string().min(1, { message: "Bahasa harus diisi" }),
   section3TopLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section3TopLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section3TopLeftImage: z.instanceof(File),
+  // section3TopLeftImage: z.instanceof(File),
   section3BottomRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section3BottomRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section3BottomRightImage: z.instanceof(File),
+  // section3BottomRightImage: z.instanceof(File),
+  section3ImageBackground: z.instanceof(File),
 });
 
 export const Section3 = () => {
@@ -34,21 +35,23 @@ export const Section3 = () => {
       language: "",
       section3TopLeftTitle: "",
       section3TopLeftDescription: "",
-      section3TopLeftImage: new File([], ""),
+      // section3TopLeftImage: new File([], ""),
       section3BottomRightTitle: "",
       section3BottomRightDescription: "",
-      section3BottomRightImage: new File([], ""),
+      // section3BottomRightImage: new File([], ""),
+      section3ImageBackground: new File([], ""),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const section3 = new FormData();
-    section3.append("section3TopLeftImage", values.section3TopLeftImage);
+    // section3.append("section3TopLeftImage", values.section3TopLeftImage);
     section3.append("section3TopLeftTitle", values.section3TopLeftTitle);
     section3.append("section3TopLeftDescription", values.section3TopLeftDescription);
-    section3.append("section3BottomRightImage", values.section3BottomRightImage);
+    // section3.append("section3BottomRightImage", values.section3BottomRightImage);
     section3.append("section3BottomRightTitle", values.section3BottomRightTitle);
     section3.append("section3BottomRightDescription", values.section3BottomRightDescription);
+    section3.append("section3ImageBackground", values.section3ImageBackground);
     section3.append("sectionNumber", "3");
   };
 
@@ -107,13 +110,13 @@ export const Section3 = () => {
             className="w-full"
             label="Description Top Section 3"
           />
-          <InputFile
+          {/* <InputFile
             name="section3TopLeftImage"
             formControl={form.control}
             label="Gambar Top Section 3"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
-          />
+          /> */}
           <InputField
             formControl={form.control}
             name="section3BottomRightTitle"
@@ -128,10 +131,17 @@ export const Section3 = () => {
             className="w-full"
             label="Description Bottom Section 3"
           />
-          <InputFile
+          {/* <InputFile
             name="section3BottomRightImage"
             formControl={form.control}
             label="Gambar Bottom Section 3"
+            className="w-full"
+            description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+          /> */}
+          <InputFile
+            name="section3ImageBackground"
+            formControl={form.control}
+            label="Gambar section 3"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
           />
