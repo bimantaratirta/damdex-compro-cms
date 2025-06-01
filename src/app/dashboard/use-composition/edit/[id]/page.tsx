@@ -36,7 +36,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       descriptionIDN: composition?.data.descriptionIDN ?? "",
       titleENG: composition?.data.titleENG ?? "",
       descriptionENG: composition?.data.descriptionENG ?? "",
-      useId: composition?.data.useid === undefined ? "" : composition?.data.useid.toString(),
+      useId: composition?.data.useId === undefined ? "" : composition?.data.useId.toString(),
     },
   });
 
@@ -63,7 +63,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       descriptionIDN: composition?.data.descriptionIDN ?? "",
       titleENG: composition?.data.titleENG ?? "",
       descriptionENG: composition?.data.descriptionENG ?? "",
-      useId: composition?.data.useid === undefined ? "" : composition?.data.useid.toString(),
+      useId: composition?.data.useId === undefined ? "" : composition?.data.useId.toString(),
     });
   }, [loading, compositionLoading]);
 
