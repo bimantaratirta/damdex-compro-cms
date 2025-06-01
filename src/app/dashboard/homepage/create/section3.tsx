@@ -50,8 +50,14 @@ export const Section3 = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // if (values.section3TopLeftImage.name === "" || values.section3BottomRightImage.name === "")
-    if (values.section3ImageBackground.name === "") toast.error("Semua file gambar harus diupload.");
+    if (values.section3ImageBackground.name === "") {
+      toast.error("Semua file gambar harus diupload.");
+      return;
+    }
 
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const section3 = new FormData();
     // section3.append("section3TopLeftImage", values.section3TopLeftImage);
     section3.append("section3TopLeftTitle", values.section3TopLeftTitle);
@@ -173,7 +179,7 @@ export const Section3 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Section 3</Button>
+          <Button>Tambah / Ubah Section 3</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

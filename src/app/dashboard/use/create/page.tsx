@@ -35,6 +35,9 @@ const Page = () => {
       toast.error("Gambar Kegunaan belum ada.");
       return;
     }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("titleENG", values.titleENG);
     if (values.heroImage !== undefined && values.heroImage.name !== "") formdata.append("heroImage", values.heroImage);

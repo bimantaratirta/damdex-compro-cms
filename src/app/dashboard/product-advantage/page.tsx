@@ -28,6 +28,15 @@ const Page = () => {
         size: 100,
       },
       {
+        accessorKey: "Nama Produk",
+        header: "Nama Produk",
+        size: 400,
+        cell: ({ row }) => {
+          const data = row.original.product.titleIDN;
+          return <div>{data}</div>;
+        },
+      },
+      {
         accessorKey: "titleIDN",
         header: "Kelebihan Produk IDN",
         size: 400,

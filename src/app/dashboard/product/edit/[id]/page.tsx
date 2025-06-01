@@ -39,6 +39,9 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const formdata = new FormData();
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("descriptionIDN", values.descriptionIDN);
@@ -109,7 +112,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Produk</Button>
+          <Button>Ubah Produk</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

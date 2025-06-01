@@ -41,6 +41,9 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     try {
       await patchUseComposition(id, {
         useId: Number(values.useId),
@@ -137,7 +140,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>ubah Komposisi</Button>
+          <Button>Ubah Komposisi</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

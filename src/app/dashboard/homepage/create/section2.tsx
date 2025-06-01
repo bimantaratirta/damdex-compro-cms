@@ -63,9 +63,14 @@ export const Section2 = () => {
       values.section2TopRightImageBackground.name === "" ||
       values.section2BottomLeftImageBackground.name === "" ||
       values.section2BottomRightImageBackground.name === ""
-    )
+    ) {
       toast.error("Semua file gambar harus diupload.");
+      return;
+    }
 
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const section2 = new FormData();
     section2.append("section2TopLeftImageBackground", values.section2TopLeftImageBackground);
     section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
@@ -220,7 +225,7 @@ export const Section2 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Tambah Section 2</Button>
+          <Button>Tambah / Ubah Section 2</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

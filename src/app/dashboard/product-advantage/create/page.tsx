@@ -45,6 +45,9 @@ const Page = () => {
       toast.error("Gambar Kelebihan Produk belum ada.");
       return;
     }
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     formdata.append("productId", values.productId);
     formdata.append("titleIDN", values.titleIDN);
     formdata.append("descriptionIDN", values.descriptionIDN);
