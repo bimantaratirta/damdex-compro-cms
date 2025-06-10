@@ -17,9 +17,7 @@ import { useUsageCompositionDetail } from "@/swr-hooks/usageComposition/useUsage
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Komposisi Bahasa Indonesia harus diisi" }),
-  descriptionIDN: z.string().min(1, { message: "Konten Komposisi Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Komposisi Bahasa Inggris harus diisi" }),
-  descriptionENG: z.string().min(1, { message: "Konten Komposisi Bahasa Inggris harus diisi" }),
   useId: z.string().min(1, { message: "Nama Komposisi Bahasa Indonesia harus diisi" }),
 });
 
@@ -33,9 +31,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       titleIDN: composition?.data.titleIDN ?? "",
-      descriptionIDN: composition?.data.descriptionIDN ?? "",
       titleENG: composition?.data.titleENG ?? "",
-      descriptionENG: composition?.data.descriptionENG ?? "",
       useId: composition?.data.useId === undefined ? "" : composition?.data.useId.toString(),
     },
   });
@@ -49,8 +45,8 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
         useId: Number(values.useId),
         titleENG: values.titleENG,
         titleIDN: values.titleIDN,
-        descriptionENG: values.descriptionENG,
-        descriptionIDN: values.descriptionIDN,
+        descriptionENG: values.titleIDN,
+        descriptionIDN: values.titleENG,
       });
       toast.success("Komposisi berhasil diubah", { description: "Anda akan segera dikembalikan ke halaman utama." });
       await mutate();
@@ -63,9 +59,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   React.useEffect(() => {
     form.reset({
       titleIDN: composition?.data.titleIDN ?? "",
-      descriptionIDN: composition?.data.descriptionIDN ?? "",
       titleENG: composition?.data.titleENG ?? "",
-      descriptionENG: composition?.data.descriptionENG ?? "",
       useId: composition?.data.useId === undefined ? "" : composition?.data.useId.toString(),
     });
   }, [loading, compositionLoading]);
@@ -117,26 +111,12 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             className="w-full"
             label="Nama Komposisi Bahasa Indonesia"
           />
-          <TextEditor
-            value={composition?.data.descriptionIDN}
-            formControl={form.control}
-            name="descriptionIDN"
-            placeholder="Konten Komposisi Bahasa Indonesia"
-            label="Konten Komposisi Bahasa Indonesia"
-          />
           <InputField
             formControl={form.control}
             name="titleENG"
             placeholder="Nama Komposisi Bahasa Inggris"
             className="w-full"
             label="Nama Komposisi Bahasa Inggris"
-          />
-          <TextEditor
-            value={composition?.data.descriptionENG}
-            formControl={form.control}
-            name="descriptionENG"
-            placeholder="Konten Komposisi Bahasa Inggris"
-            label="Konten Komposisi Bahasa Inggris"
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

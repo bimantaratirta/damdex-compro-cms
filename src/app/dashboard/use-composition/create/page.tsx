@@ -16,9 +16,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 const formSchema = z.object({
   titleIDN: z.string().min(1, { message: "Nama Komposisi Bahasa Indonesia harus diisi" }),
-  descriptionIDN: z.string().min(1, { message: "Konten Komposisi Bahasa Indonesia harus diisi" }),
   titleENG: z.string().min(1, { message: "Nama Komposisi Bahasa Inggris harus diisi" }),
-  descriptionENG: z.string().min(1, { message: "Konten Komposisi Bahasa Inggris harus diisi" }),
   useId: z.string().min(1, { message: "Nama Komposisi Bahasa Indonesia harus diisi" }),
 });
 
@@ -29,9 +27,7 @@ const Page = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       titleIDN: "",
-      descriptionIDN: "",
       titleENG: "",
-      descriptionENG: "",
       useId: "",
     },
   });
@@ -45,8 +41,8 @@ const Page = () => {
         useId: Number(values.useId),
         titleENG: values.titleENG,
         titleIDN: values.titleIDN,
-        descriptionENG: values.descriptionENG,
-        descriptionIDN: values.descriptionIDN,
+        descriptionENG: values.titleENG,
+        descriptionIDN: values.titleIDN,
       });
       toast.success("Komposisi berhasil dibuat", { description: "Anda akan segera dikembalikan ke halaman utama." });
       router.push("/dashboard/use-composition");
@@ -102,24 +98,12 @@ const Page = () => {
             className="w-full"
             label="Nama Komposisi Bahasa Indonesia"
           />
-          <TextEditor
-            formControl={form.control}
-            name="descriptionIDN"
-            placeholder="Konten Komposisi Bahasa Indonesia"
-            label="Konten Komposisi Bahasa Indonesia"
-          />
           <InputField
             formControl={form.control}
             name="titleENG"
             placeholder="Nama Komposisi Bahasa Inggris"
             className="w-full"
             label="Nama Komposisi Bahasa Inggris"
-          />
-          <TextEditor
-            formControl={form.control}
-            name="descriptionENG"
-            placeholder="Konten Komposisi Bahasa Inggris"
-            label="Konten Komposisi Bahasa Inggris"
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

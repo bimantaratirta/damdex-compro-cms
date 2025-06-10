@@ -139,7 +139,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Nama Kelebihan Produk Bahasa Inggris"
           />
           <TextEditor
-            value={advantage?.data.descriptionIDN}
+            value={advantage?.data.descriptionENG}
             formControl={form.control}
             name="descriptionENG"
             placeholder="Konten Kelebihan Produk Bahasa Inggris"
