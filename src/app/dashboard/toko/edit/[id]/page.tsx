@@ -66,7 +66,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       city: store?.data.city ?? "",
     });
     setProvinsi(store?.data.province ?? "");
-  }, [loading]);
+  }, [loading, provinsi]);
 
   return (
     <Form {...form}>
