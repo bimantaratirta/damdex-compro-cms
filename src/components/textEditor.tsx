@@ -151,10 +151,10 @@ export function TextEditor({ formControl, name, label, placeholder = "Isi konten
                           <FontFormatToolbarPlugin format="strikethrough" />
                           <SubSuperToolbarPlugin />
                           <ElementFormatToolbarPlugin />
-                          {/* <BlockInsertPlugin>
+                          <BlockInsertPlugin>
                             <InsertImage />
                             <InsertInlineImage />
-                          </BlockInsertPlugin> */}
+                          </BlockInsertPlugin>
                         </div>
                       )}
                     </ToolbarPlugin>

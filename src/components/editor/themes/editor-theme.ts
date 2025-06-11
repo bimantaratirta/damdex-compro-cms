@@ -13,7 +13,7 @@ export const editorTheme: EditorThemeClasses = {
     h5: "!scroll-m-20 !text-lg !font-semibold !tracking-tight",
     h6: "!scroll-m-20 !text-base !font-semibold !tracking-tight",
   },
-  paragraph: "leading-7",
+  paragraph: "leading-7 paragraf",
   quote: "!mt-6 !border-l-2 !pl-6 !italic",
   link: "!text-blue-600 !hover:underline hover:cursor-pointer!",
   list: {
@@ -47,7 +47,7 @@ export const editorTheme: EditorThemeClasses = {
     underline: "!underline",
     underlineStrikethrough: "!underline !line-through",
   },
-  image: "relative inline-block user-select-none cursor-default editor-image",
+  image: "!relative !inline-block !user-select-none !cursor-default !editor-image",
   inlineImage: "relative inline-block user-select-none cursor-default inline-editor-image",
   keyword: "text-purple-900 font-bold",
   code: "EditorTheme__code",
