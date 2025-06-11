@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Home, GalleryThumbnails, Newspaper, Folder, Tag, Paintbrush } from "lucide-react";
+import { Home, GalleryThumbnails, Newspaper, Folder, Tag, Paintbrush, Store } from "lucide-react";
 import Image from "next/image";
 import logo from "@/../public/damdexlogo.png";
 
@@ -59,6 +59,11 @@ const menuItems = [
     name: "Product Advantage",
     icon: Tag,
     url: "/dashboard/product-advantage",
+  },
+  {
+    name: "Toko",
+    icon: Store,
+    url: "/dashboard/toko",
   },
 ];
 
