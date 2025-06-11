@@ -108,7 +108,7 @@ export function InsertInlineImageDialog({
   }, [activeEditor]);
 
   const handleOnClick = () => {
-    const payload = { altText, position, showCaption, src, width: 500, height: 300 };
+    const payload = { altText, position, showCaption, src, width: 300, height: 300 };
     activeEditor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, payload);
     onClose();
   };
