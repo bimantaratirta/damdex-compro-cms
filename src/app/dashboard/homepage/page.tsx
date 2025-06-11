@@ -18,7 +18,7 @@ const Page = () => {
         Home Page
       </h1>
       <div className="flex flex-row-reverse mb-2">
-        <Button onClick={() => router.push("/dashboard/homepage/create")}>Masukkan / Ubah Data Home Page</Button>
+        <Button onClick={() => router.push("/dashboard/homepage/data")}>Masukkan / Ubah Data Home Page</Button>
       </div>
       <div className="flex flex-col space-y-4">
         <p>
