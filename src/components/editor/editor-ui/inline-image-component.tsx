@@ -175,14 +175,14 @@ export function UpdateInlineImageDialog({
         </Select>
       </div>
 
-      <div className="flex items-center space-x-2">
+      {/* <div className="flex items-center space-x-2">
         <Checkbox
           id="caption"
           checked={showCaption}
           onCheckedChange={(checked) => setShowCaption(checked as boolean)}
         />
         <Label htmlFor="caption">Show Caption</Label>
-      </div>
+      </div> */}
 
       <DialogFooter>
         <Button
@@ -391,24 +391,6 @@ export default function InlineImageComponent({
             <BrokenImage />
           ) : (
             <>
-              {isEditable && (
-                <Button
-                  className="image-edit-button absolute right-1 top-1"
-                  variant="outline"
-                  ref={buttonRef}
-                  onClick={() => {
-                    showModal("Update Inline Image", (onClose) => (
-                      <UpdateInlineImageDialog
-                        activeEditor={editor}
-                        nodeKey={nodeKey}
-                        onClose={onClose}
-                      />
-                    ));
-                  }}
-                >
-                  Edit
-                </Button>
-              )}
               <LazyImage
                 className={`max-w-full cursor-default ${
                   isFocused

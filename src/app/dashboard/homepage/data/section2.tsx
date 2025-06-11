@@ -10,6 +10,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { postHome } from "@/repositories/home";
+import { errorHandling } from "@/lib/utils";
+import { useHome } from "@/swr-hooks/home/useHome";
 
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
@@ -20,55 +24,115 @@ const formSchema = z.object({
   language: z.string().min(1, { message: "Bahasa harus diisi" }),
   section2TopLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2TopLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2TopLeftImage: z.instanceof(File),
+  section2TopLeftImageBackground: z.instanceof(File).optional(),
   section2TopRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2TopRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2TopRightImage: z.instanceof(File),
+  section2TopRightImageBackground: z.instanceof(File).optional(),
   section2BottomLeftTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2BottomLeftDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2BottomLeftImage: z.instanceof(File),
+  section2BottomLeftImageBackground: z.instanceof(File).optional(),
   section2BottomRightTitle: z.string().min(1, { message: "Judul harus diisi" }),
   section2BottomRightDescription: z.string().min(1, { message: "Deskripsi harus diisi" }),
-  section2BottomRightImage: z.instanceof(File),
+  section2BottomRightImageBackground: z.instanceof(File).optional(),
 });
 
 export const Section2 = () => {
   const router = useRouter();
+  const [lang, setLang] = React.useState<string>("id");
+  const { data, loading } = useHome({ section: 2, lang: lang });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      language: "",
+      language: lang,
       section2TopLeftTitle: "",
       section2TopLeftDescription: "",
-      section2TopLeftImage: new File([], ""),
+      section2TopLeftImageBackground: new File([], ""),
       section2TopRightTitle: "",
       section2TopRightDescription: "",
-      section2TopRightImage: new File([], ""),
+      section2TopRightImageBackground: new File([], ""),
       section2BottomLeftTitle: "",
       section2BottomLeftDescription: "",
-      section2BottomLeftImage: new File([], ""),
+      section2BottomLeftImageBackground: new File([], ""),
       section2BottomRightTitle: "",
       section2BottomRightDescription: "",
-      section2BottomRightImage: new File([], ""),
+      section2BottomRightImageBackground: new File([], ""),
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (
+      data?.data.length === 0 &&
+      (values.section2TopLeftImageBackground!.name === "" ||
+        values.section2TopRightImageBackground!.name === "" ||
+        values.section2BottomLeftImageBackground!.name === "" ||
+        values.section2BottomRightImageBackground!.name === "")
+    ) {
+      toast.error(
+        `file gambar harus diupload karena section 2 bahasa ${
+          dataBahasa.find((d) => d.value === lang)?.name
+        } belum memiliki gambar`
+      );
+      return;
+    }
+
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
     const section2 = new FormData();
-    section2.append("section2TopLeftImage", values.section2TopLeftImage);
+    if (values.section2TopLeftImageBackground !== undefined && values.section2TopLeftImageBackground.name !== "")
+      section2.append("section2TopLeftImageBackground", values.section2TopLeftImageBackground);
     section2.append("section2TopLeftTitle", values.section2TopLeftTitle);
     section2.append("section2TopLeftDescription", values.section2TopLeftDescription);
-    section2.append("section2TopRightImage", values.section2TopRightImage);
+    if (values.section2TopRightImageBackground !== undefined && values.section2TopRightImageBackground.name !== "")
+      section2.append("section2TopRightImageBackground", values.section2TopRightImageBackground);
     section2.append("section2TopRightTitle", values.section2TopRightTitle);
     section2.append("section2TopRightDescription", values.section2TopRightDescription);
-    section2.append("section2BottomLeftImage", values.section2BottomLeftImage);
+    if (values.section2BottomLeftImageBackground !== undefined && values.section2BottomLeftImageBackground.name !== "")
+      section2.append("section2BottomLeftImageBackground", values.section2BottomLeftImageBackground);
     section2.append("section2BottomLeftTitle", values.section2BottomLeftTitle);
     section2.append("section2BottomLeftDescription", values.section2BottomLeftDescription);
-    section2.append("section2BottomRightImage", values.section2BottomRightImage);
+    if (
+      values.section2BottomRightImageBackground !== undefined &&
+      values.section2BottomRightImageBackground.name !== ""
+    )
+      section2.append("section2BottomRightImageBackground", values.section2BottomRightImageBackground);
     section2.append("section2BottomRightTitle", values.section2BottomRightTitle);
     section2.append("section2BottomRightDescription", values.section2BottomRightDescription);
     section2.append("sectionNumber", "2");
+    section2.append("language", values.language);
+
+    try {
+      await postHome(section2);
+      toast.success("Data homepage section 2 berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      router.push("/dashboard/homepage");
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
   };
+
+  React.useEffect(() => {
+    form.reset({
+      language: lang,
+      section2TopLeftTitle: data?.data.find((data) => data.key === "section-2-top-left-title")?.content ?? "",
+      section2TopLeftDescription:
+        data?.data.find((data) => data.key === "section-2-top-left-description")?.content ?? "",
+      section2TopLeftImageBackground: new File([], ""),
+      section2TopRightTitle: data?.data.find((data) => data.key === "section-2-top-right-title")?.content ?? "",
+      section2TopRightDescription:
+        data?.data.find((data) => data.key === "section-2-top-right-description")?.content ?? "",
+      section2TopRightImageBackground: new File([], ""),
+      section2BottomLeftTitle: data?.data.find((data) => data.key === "section-2-bottom-left-title")?.content ?? "",
+      section2BottomLeftDescription:
+        data?.data.find((data) => data.key === "section-2-bottom-left-description")?.content ?? "",
+      section2BottomLeftImageBackground: new File([], ""),
+      section2BottomRightTitle: data?.data.find((data) => data.key === "section-2-bottom-right-title")?.content ?? "",
+      section2BottomRightDescription:
+        data?.data.find((data) => data.key === "section-2-bottom-right-description")?.content ?? "",
+      section2BottomRightImageBackground: new File([], ""),
+    });
+  }, [loading, lang]);
 
   return (
     <Form {...form}>
@@ -87,7 +151,10 @@ export const Section2 = () => {
                 <FormControl>
                   <Select
                     defaultValue={field.value}
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setLang(value);
+                    }}
                     {...field}
                   >
                     <SelectTrigger className="w-full">
@@ -126,7 +193,7 @@ export const Section2 = () => {
             label="Description Top Left Section 2"
           />
           <InputFile
-            name="section2TopLeftImage"
+            name="section2TopLeftImageBackground"
             formControl={form.control}
             label="Gambar Top Left Section 2"
             className="w-full"
@@ -147,7 +214,7 @@ export const Section2 = () => {
             label="Description Top Right Section 2"
           />
           <InputFile
-            name="section2TopRightImage"
+            name="section2TopRightImageBackground"
             formControl={form.control}
             label="Gambar Top Right Section 2"
             className="w-full"
@@ -168,7 +235,7 @@ export const Section2 = () => {
             label="Description Bottom Left Section 2"
           />
           <InputFile
-            name="section2BottomLeftImage"
+            name="section2BottomLeftImageBackground"
             formControl={form.control}
             label="Gambar Bottom Left Section 2"
             className="w-full"
@@ -189,7 +256,7 @@ export const Section2 = () => {
             label="Description Bottom Right Section 2"
           />
           <InputFile
-            name="section2BottomRightImage"
+            name="section2BottomRightImageBackground"
             formControl={form.control}
             label="Gambar Bottom Right Section 2"
             className="w-full"
@@ -197,7 +264,7 @@ export const Section2 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Section 2</Button>
+          <Button>Tambah / Ubah Section 2</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { InputArea } from "@/components/inputArea";
 import { useRouter } from "next/navigation";
-// import { patchHome } from "@/repositories/home";
-// import { toast } from "sonner";
-// import { errorHandling } from "@/lib/utils";
-
+import { toast } from "sonner";
+import { postHome } from "@/repositories/home";
+import { errorHandling } from "@/lib/utils";
+import { useHome } from "@/swr-hooks/home/useHome";
 const dataBahasa = [
   { value: "id", name: "Indonesia" },
   { value: "eng", name: "Inggris" },
@@ -20,17 +20,19 @@ const dataBahasa = [
 
 const formSchema = z.object({
   language: z.string().min(1, { message: "Bahasa harus diisi" }),
-  section1Background: z.instanceof(File),
-  section1GifImage: z.instanceof(File),
+  section1Background: z.instanceof(File).optional(),
+  section1GifImage: z.instanceof(File).optional(),
   section1Description: z.string().min(1, { message: "Deskripsi harus diisi" }),
 });
 
 export const Section1 = () => {
   const router = useRouter();
+  const [lang, setLang] = React.useState<string>("id");
+  const { data, loading } = useHome({ section: 1, lang: lang });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      language: "",
+      language: lang,
       section1Background: new File([], ""),
       section1GifImage: new File([], ""),
       section1Description: "",
@@ -38,12 +40,47 @@ export const Section1 = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (data?.data.length === 0 && (values.section1Background!.name === "" || values.section1GifImage!.name === "")) {
+      toast.error(
+        `file gambar harus diupload karena section 1 bahasa ${
+          dataBahasa.find((d) => d.value === lang)?.name
+        } belum memiliki gambar`
+      );
+      return;
+    }
+
+    toast.success("Pengiriman data sedang diproses.", {
+      description: "Mohon Tunggu.",
+    });
+
     const section1 = new FormData();
-    section1.append("section1Background", values.section1Background);
-    section1.append("section1GifImage", values.section1GifImage);
+    if (values.section1Background !== undefined && values.section1Background.name !== "")
+      section1.append("section1Background", values.section1Background);
+    if (values.section1GifImage !== undefined && values.section1GifImage.name !== "")
+      section1.append("section1GifImage", values.section1GifImage);
     section1.append("section1Description", values.section1Description);
     section1.append("sectionNumber", "1");
+    section1.append("language", values.language);
+
+    try {
+      await postHome(section1);
+      toast.success("Data homepage section 1 berhasil ditambahkan.", {
+        description: "Anda akan segera diarahkan ke halaman utama",
+      });
+      router.push("/dashboard/homepage");
+    } catch (error) {
+      errorHandling(error, "Data homepage gagal ditambahkan.");
+    }
   };
+
+  React.useEffect(() => {
+    form.reset({
+      language: lang,
+      section1Background: new File([], ""),
+      section1GifImage: new File([], ""),
+      section1Description: data?.data.find((data) => data.key === "section-1-description")?.content ?? "",
+    });
+  }, [loading, lang]);
 
   return (
     <Form {...form}>
@@ -62,7 +99,10 @@ export const Section1 = () => {
                 <FormControl>
                   <Select
                     defaultValue={field.value}
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setLang(value);
+                    }}
                     {...field}
                   >
                     <SelectTrigger className="w-full">
@@ -96,7 +136,7 @@ export const Section1 = () => {
           <InputFile
             name="section1GifImage"
             formControl={form.control}
-            label="Background Section 1"
+            label="GIF Section 1"
             className="w-full"
             description="File yang diterima dalam format gif dengan ukuran file tidak lebih dari 10MB."
             acceptedFiles=".gif"
@@ -110,7 +150,7 @@ export const Section1 = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Edit Section 1</Button>
+          <Button>Tambah / Ubah Section 1</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

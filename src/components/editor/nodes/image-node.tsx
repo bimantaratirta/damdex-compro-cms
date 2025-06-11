@@ -114,6 +114,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     element.setAttribute("alt", this.__altText);
     element.setAttribute("width", this.__width.toString());
     element.setAttribute("height", this.__height.toString());
+    element.className = "gambar";
     return { element };
   }
 
