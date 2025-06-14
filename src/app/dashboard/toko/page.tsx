@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Store } from "@/lib/types/store";
 import { useStore } from "@/swr-hooks/store/useStore";
 import { deleteStore } from "@/repositories/store";
+import { useProvinceOptions } from "@/swr-hooks/store/useProvinceOptions";
+import { useCityOptions } from "@/swr-hooks/store/useCityOptions";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Page = () => {
   const router = useRouter();
@@ -64,10 +67,16 @@ const Page = () => {
     []
   );
 
+  const [provinsi, setProvinsi] = React.useState<string>("");
+  const [kota, setKota] = React.useState<string>("");
+  const { data: province } = useProvinceOptions();
+  const { data: city } = useCityOptions(provinsi);
   const { handlePaginationModelChange, pagination } = usePaginationData();
   const { data, loading, mutate } = useStore({
     page: pagination.pageIndex,
     limit: pagination.pageSize,
+    province: provinsi,
+    city: kota,
   });
   const defaultData = React.useMemo(() => data?.data.payload ?? [], [data]);
   const handleDelete = async (id: number) => {
@@ -86,8 +95,56 @@ const Page = () => {
       <h1 className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
         Toko
       </h1>
-      <div className="flex flex-row-reverse mb-2">
+      <div className="flex flex-row-reverse mb-2 justify-between">
         <Button onClick={() => router.push("/dashboard/toko/create")}>Tambah Toko</Button>
+        <div className="flex flex-row space-x-2.5">
+          <Select
+            defaultValue={provinsi}
+            onValueChange={(value) => {
+              setProvinsi(value);
+              setKota("");
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Provinsi" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {province?.data.map((val, idx) => (
+                  <SelectItem
+                    key={idx}
+                    value={val.value}
+                  >
+                    {val.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select
+            disabled={provinsi === ""}
+            defaultValue={kota}
+            onValueChange={(value) => {
+              setKota(value);
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Kota" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {city?.data.map((val, idx) => (
+                  <SelectItem
+                    key={idx}
+                    value={val.value}
+                  >
+                    {val.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <DataGrid
         columns={usageColumns}

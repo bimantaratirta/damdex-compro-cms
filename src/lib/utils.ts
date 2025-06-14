@@ -2,8 +2,8 @@ import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
-import { HomeQuery, PaginationQuery } from "./query";
-import { HomeParams, PaginationParams } from "./params";
+import { HomeQuery, PaginationQuery, StoreQuery } from "./query";
+import { HomeParams, PaginationParams, StoreParams } from "./params";
 import { createHash } from "crypto";
 
 export function cn(...inputs: ClassValue[]) {
@@ -75,4 +75,14 @@ export const homeQuerytoParams = (query: HomeQuery): HomeParams => {
 export const hasher = (data: string) => {
   const hashed = createHash("sha256").update(data).digest("hex");
   return hashed;
+};
+
+export const storeQuerytoParams = (query: StoreQuery): StoreParams => {
+  return {
+    page: query.page ?? undefined,
+    limit: query.limit ?? undefined,
+    city: query.city ?? undefined,
+    province: query.province ?? undefined,
+    storeName: query.storeName ?? undefined,
+  };
 };
