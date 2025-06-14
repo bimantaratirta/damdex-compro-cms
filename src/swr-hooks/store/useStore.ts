@@ -1,23 +1,26 @@
-import useSWR from "swr";
+import { StoreParams } from "@/lib/params";
+import { StoreQuery } from "@/lib/query";
+import { storeQuerytoParams } from "@/lib/utils";
 import { fetchStore } from "@/repositories/store";
-import { PaginationParams } from "@/lib/params";
-import { PaginationQuery } from "@/lib/query";
-import { paginationQueryToParams } from "@/lib/utils";
+import useSWR from "swr";
 
-export const storeParamsSwrKey = (query?: PaginationQuery) => {
-  const params: PaginationParams | undefined = query ? paginationQueryToParams(query) : undefined;
+export const storeParamsSwrKey = (query?: StoreQuery) => {
+  const params: StoreParams | undefined = query ? storeQuerytoParams(query) : undefined;
 
   if (params) {
     if (!params?.limit) delete params.limit;
     if (!params?.page) delete params.page;
+    if (!params?.city) delete params.city;
+    if (!params?.province) delete params.province;
+    if (!params?.storeName) delete params.storeName;
   }
 
   return ["/store", params];
 };
 
-export const useStore = (query?: PaginationQuery) => {
+export const useStore = (query?: StoreQuery) => {
   const { data, mutate, error } = useSWR(storeParamsSwrKey(query), ([path, params]) =>
-    fetchStore(params as PaginationParams)
+    fetchStore(params as StoreParams)
   );
   const loading = !data && !error;
 

@@ -76,7 +76,7 @@ const Page = () => {
                     {...field}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ID kegunaan" />
+                      <SelectValue placeholder="Provinsi" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -112,7 +112,7 @@ const Page = () => {
                     {...field}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ID kegunaan" />
+                      <SelectValue placeholder="Kota" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -163,7 +163,7 @@ const Page = () => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Buat Komposisi</Button>
+          <Button>Tambah Toko</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

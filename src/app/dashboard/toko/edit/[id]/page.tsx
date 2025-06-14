@@ -73,7 +73,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4 my-2">
           <p className="mb-5 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
-            Tambah Toko
+            Edit Toko
           </p>
           <FormField
             control={form.control}
@@ -91,7 +91,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
                     {...field}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ID kegunaan" />
+                      <SelectValue placeholder="Provinsi" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -127,7 +127,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
                     {...field}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ID kegunaan" />
+                      <SelectValue placeholder="Kota" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
@@ -178,7 +178,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
-          <Button>Buat Komposisi</Button>
+          <Button>Edit Toko</Button>
           <Button
             onClick={(e) => {
               e.preventDefault();
