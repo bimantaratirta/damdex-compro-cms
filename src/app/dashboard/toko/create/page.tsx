@@ -149,10 +149,10 @@ const Page = () => {
           <InputField
             formControl={form.control}
             name="storeAddressGoogleMap"
-            placeholder="Koordinat Toko"
+            placeholder="URL alamat Toko"
             className="w-full"
-            label="Koordinat Toko"
-            description="Data koordinat diambil dari google maps"
+            label="URL alamat Toko"
+            description="Data URL alamat diambil dari google maps"
           />
           <InputField
             formControl={form.control}
