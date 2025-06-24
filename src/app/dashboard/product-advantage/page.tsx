@@ -32,7 +32,7 @@ const Page = () => {
         header: "Nama Produk",
         size: 400,
         cell: ({ row }) => {
-          const data = row.original.product.titleIDN;
+          const data = row.original.productId === 1 ? "Multifungsi" : "Warna";
           return <div>{data}</div>;
         },
       },
