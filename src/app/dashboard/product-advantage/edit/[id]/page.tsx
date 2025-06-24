@@ -34,7 +34,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      productId: advantage?.data.productId !== undefined ? advantage?.data.productId.toString() : "",
       titleIDN: advantage?.data.titleIDN ?? "",
       descriptionIDN: advantage?.data.descriptionIDN ?? "",
       titleENG: advantage?.data.titleENG ?? "",
@@ -68,7 +68,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      productId: advantage?.data.productId !== undefined ? advantage?.data.productId.toString() : "",
       titleIDN: advantage?.data.titleIDN ?? "",
       descriptionIDN: advantage?.data.descriptionIDN ?? "",
       titleENG: advantage?.data.titleENG ?? "",
