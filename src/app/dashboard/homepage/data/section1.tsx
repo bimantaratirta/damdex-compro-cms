@@ -132,6 +132,7 @@ export const Section1 = () => {
             label="Background Section 1"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={data?.data.find((data) => data.key === "section-1-background")?.fileUrl}
           />
           <InputFile
             name="section1GifImage"
@@ -140,6 +141,7 @@ export const Section1 = () => {
             className="w-full"
             description="File yang diterima dalam format gif dengan ukuran file tidak lebih dari 10MB."
             acceptedFiles=".gif"
+            imgUrl={data?.data.find((data) => data.key === "section-1-gif-image")?.fileUrl}
           />
           <InputArea
             formControl={form.control}
