@@ -26,7 +26,6 @@ import {
 } from "lexical";
 
 import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -45,8 +44,6 @@ const getDOMSelection = (targetWindow: Window | null): Selection | null =>
 export const INSERT_IMAGE_COMMAND: LexicalCommand<{
   src: string;
   altText: string;
-  width: number;
-  height: number;
 }> = createCommand("INSERT_IMAGE_COMMAND");
 
 export function InsertImageUploadedDialogBody({ onClick }: { onClick: (src: FileList) => void }) {
@@ -102,9 +99,9 @@ export function InsertImageDialog({
     const unregister = editor.registerCommand(
       INSERT_IMAGE_COMMAND,
       (payload) => {
-        const { src, altText, width, height } = payload;
+        const { src, altText } = payload;
         editor.update(() => {
-          const imageNode = $createImageNode({ src: src, altText: altText, width: width, height: height });
+          const imageNode = $createImageNode({ src: src, altText: altText });
           $insertNodes([imageNode]);
         });
         return true;
@@ -133,8 +130,6 @@ export function InsertImageDialog({
         editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
           src: imageUrl,
           altText: file.name,
-          width: 500, // Sesuaikan dengan kebutuhan
-          height: 300, // Sesuaikan dengan kebutuhan
         });
 
         toast.success("Gambar berhasil diupload");
@@ -147,10 +142,7 @@ export function InsertImageDialog({
   return (
     <Tabs defaultValue="file">
       <TabsList className="w-full">
-        <TabsTrigger
-          value="file"
-          className="w-full"
-        >
+        <TabsTrigger value="file" className="w-full">
           File
         </TabsTrigger>
       </TabsList>
