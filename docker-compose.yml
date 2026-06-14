@@ -1,0 +1,17 @@
+# cms-landing-damdex — Next.js CMS
+# Server source dir: /code/damdex-compro-cms  | public via nginx (do NOT expose directly)
+# Usage:  docker compose up -d --build   |   docker compose down
+services:
+  cms-landing-damdex:
+    build: .
+    image: cms-landing-damdex:latest
+    container_name: cms-landing-damdex
+    restart: always
+    ports:
+      # localhost-only: nginx proxies publicly. Keeps :3138 off the internet.
+      - "127.0.0.1:3138:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 1g
