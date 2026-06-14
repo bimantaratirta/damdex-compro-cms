@@ -2,9 +2,9 @@ FROM node:lts-alpine3.20
 
 WORKDIR /app
 
-COPY package.json ./
-# install dependencies
-RUN npm install --legacy-peer-deps
+COPY package.json package-lock.json ./
+# install dependencies reproducibly from the patched lockfile
+RUN npm ci --legacy-peer-deps
 COPY . .
 
 # build
