@@ -34,7 +34,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      productId: advantage?.data.productId !== undefined ? advantage?.data.productId.toString() : "",
       titleIDN: advantage?.data.titleIDN ?? "",
       descriptionIDN: advantage?.data.descriptionIDN ?? "",
       titleENG: advantage?.data.titleENG ?? "",
@@ -68,7 +68,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
 
   React.useEffect(() => {
     form.reset({
-      productId: advantage?.data.productid !== undefined ? advantage?.data.productid.toString() : "",
+      productId: advantage?.data.productId !== undefined ? advantage?.data.productId.toString() : "",
       titleIDN: advantage?.data.titleIDN ?? "",
       descriptionIDN: advantage?.data.descriptionIDN ?? "",
       titleENG: advantage?.data.titleENG ?? "",
@@ -151,6 +151,7 @@ const Page = ({ params }: { params: Promise<{ id: number }> }) => {
             label="Gambar Kelebihan Produk"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={advantage?.data.heroImageUrl}
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">

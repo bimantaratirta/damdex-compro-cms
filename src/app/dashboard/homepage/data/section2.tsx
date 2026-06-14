@@ -198,6 +198,7 @@ export const Section2 = () => {
             label="Gambar Top Left Section 2"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={data?.data.find((data) => data.key === "section-2-top-left-image-background")?.fileUrl}
           />
           <InputField
             formControl={form.control}
@@ -219,6 +220,7 @@ export const Section2 = () => {
             label="Gambar Top Right Section 2"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={data?.data.find((data) => data.key === "section-2-top-right-image-background")?.fileUrl}
           />
           <InputField
             formControl={form.control}
@@ -240,6 +242,7 @@ export const Section2 = () => {
             label="Gambar Bottom Left Section 2"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={data?.data.find((data) => data.key === "section-2-bottom-left-image-background")?.fileUrl}
           />
           <InputField
             formControl={form.control}
@@ -261,6 +264,7 @@ export const Section2 = () => {
             label="Gambar Bottom Right Section 2"
             className="w-full"
             description="File yang diterima dalam format gambar dengan ukuran file tidak lebih dari 10MB."
+            imgUrl={data?.data.find((data) => data.key === "section-2-bottom-right-image-background")?.fileUrl}
           />
         </div>
         <div className="flex flex-row-reverse mb-2 space-x-2 space-x-reverse">
